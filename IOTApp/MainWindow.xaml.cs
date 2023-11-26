@@ -41,5 +41,36 @@ namespace IOTApp
         {
             Close();
         }
+
+        /// <summary>
+        /// Open the View Employees window as a dialog.
+        /// </summary>
+        private void ViewEmployees()
+        {
+            ViewEmployeesWindow win = new(_db);
+            win.Owner = this;
+            win.ShowDialog();
+        }
+
+        /// <summary>
+        /// Clicking the Employees button opens the View Employees dialog.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonEmployees_Click(object sender, RoutedEventArgs e)
+        {
+            ViewEmployees();
+        }
+
+        /// <summary>
+        /// Clicking the Employees -> View/Manage menu item opens the View Employees
+        /// dialog.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuItemViewEmployees_Click(object sender, RoutedEventArgs e)
+        {
+            ViewEmployees();
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace IOTApp
     /// An employee record. This does not include all information from the database, and
     /// it summarises some information in a readable form.
     /// </summary>
-    class Employee
+    public class Employee
     {
         /// <summary>
         /// The employee's unique ID.
@@ -32,7 +32,7 @@ namespace IOTApp
         /// The employee's gender identity represented as a single character. Valid
         /// identity codes are M, F, and O (for Other).
         /// </summary>
-        public char GenderIdentity { get; set; }
+        public string GenderIdentity { get; set; }
         /// <summary>
         /// The employee's annual salary before tax.
         /// </summary>
@@ -63,7 +63,7 @@ namespace IOTApp
         /// <param name="branch">The employee's branch, if known. Can be null or
         /// omitted.</param>
         public Employee(int id, string givenName, string familyName, DateOnly dob,
-            char gender, int salary, string? supervisor="", string? branch="")
+            string gender, int salary, string? supervisor="", string? branch="")
         {
             Id = id;
             GivenName = givenName;
