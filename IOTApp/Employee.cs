@@ -38,13 +38,51 @@ namespace IOTApp
         /// </summary>
         public int GrossSalary { get; set; }
         /// <summary>
-        /// The full name of the employee's supervisor.
+        /// The full name of the employee's supervisor. This can be null in the database;
+        /// if so, it will be initialised as an empty string.
         /// </summary>
         public string SupervisorName { get; set; }
         /// <summary>
-        /// The name of the branch the employee works at.
+        /// The name of the branch the employee works at. If null, it will be initialised
+        /// as an empty string.
         /// </summary>
         public string BranchName { get; set; }
+
+        /// <summary>
+        /// Initialise the employee with the given details.
+        /// </summary>
+        /// <param name="id">The employee's unique ID number.</param>
+        /// <param name="givenName">The employee's first name.</param>
+        /// <param name="familyName">The employee's surname.</param>
+        /// <param name="dob">The employee's date of birth.</param>
+        /// <param name="gender">The employee's gender identity, represented by one of
+        /// the chars M, F or O (for Other).</param>
+        /// <param name="salary">The employee's annual salary before tax.</param>
+        /// <param name="supervisor">The employee's supervisor, if known. Can be null or
+        /// omitted.</param>
+        /// <param name="branch">The employee's branch, if known. Can be null or
+        /// omitted.</param>
+        public Employee(int id, string givenName, string familyName, DateOnly dob,
+            char gender, int salary, string? supervisor="", string? branch="")
+        {
+            Id = id;
+            GivenName = givenName;
+            FamilyName = familyName;
+            DateOfBirth = dob;
+            GenderIdentity = gender;
+            GrossSalary = salary;
+
+            // If the supervisor name or the branch name is null, initialise the relevant
+            // property as an empty string instead.
+            if (supervisor == null)
+                SupervisorName = String.Empty;
+            else
+                SupervisorName = supervisor;
+            if (branch == null)
+                BranchName = String.Empty;
+            else
+                BranchName = branch;
+        }
 
         /// <summary>
         /// Return the employee's full name formatted as a string.
