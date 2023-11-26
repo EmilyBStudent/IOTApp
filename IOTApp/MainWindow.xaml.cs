@@ -24,5 +24,15 @@ namespace IOTApp
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Clicking the File -> Exit menu item closes the app.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuItemExit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
