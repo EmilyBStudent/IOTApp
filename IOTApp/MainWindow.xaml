@@ -24,7 +24,8 @@
         <DockPanel Grid.ColumnSpan="4">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem x:Name="MenuItemExit" Header="E_xit"/>
+                    <MenuItem x:Name="MenuItemExit" Header="E_xit"
+                              Click="MenuItemExit_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Clients">
                     <MenuItem x:Name="MenuItemViewClients" Header="_View/Manage..."
