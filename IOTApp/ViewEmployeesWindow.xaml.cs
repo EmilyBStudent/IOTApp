@@ -59,5 +59,10 @@ namespace IOTApp
         {
             Close();
         }
+
+        private void DataGridEmployeeList_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+
+        }
     }
 }

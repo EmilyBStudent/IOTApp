@@ -94,6 +94,33 @@ namespace IOTApp
         }
 
         /// <summary>
+        /// Format the salary as a currency string, starting with a dollar sign and
+        /// separating the thousands with commas.
+        /// </summary>
+        /// <returns>The employee's salary, formatted as currency.</returns>
+        public string GetSalaryAsCurrency()
+        {
+            string origSalary = GrossSalary.ToString();
+            string formattedSalary = String.Empty;
+
+            // Starting from the end of the salary number string, copy one digit at a
+            // time to the formatted string, inserting a comma every 3 digits.
+            for (int i = origSalary.Length - 1; i < 0; i--)
+            {
+                formattedSalary = origSalary.Substring(i, 1) + formattedSalary;
+                /// Add a comma between every 3 digits.
+                if ((origSalary.Length - 1 - i) % 3 == 0)
+                    formattedSalary = "," + formattedSalary;
+            }
+
+            // Ensure we didn't finish with a comma, then add the dollar sign.
+            if (formattedSalary.Substring(0, 1) == ",")
+                formattedSalary = formattedSalary.Substring(1);
+            formattedSalary = "$" + formattedSalary;
+            return formattedSalary;
+        }
+
+        /// <summary>
         /// Represent the Employee as a string by returning the employee's full name.
         /// </summary>
         /// <returns></returns>
