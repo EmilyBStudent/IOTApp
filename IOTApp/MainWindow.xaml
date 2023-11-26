@@ -5,8 +5,76 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IOTApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Incredibly Obvious Technologies" Height="350" Width="600" MinHeight="350"
+        MinWidth="525">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" MinWidth="292"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8"/>
+        </Grid.RowDefinitions>
 
+        <DockPanel Grid.ColumnSpan="4">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem x:Name="MenuItemExit" Header="E_xit"/>
+                </MenuItem>
+                <MenuItem Header="_Clients">
+                    <MenuItem x:Name="MenuItemViewClients" Header="_View/Manage..."
+                              IsEnabled="False"/>
+                    <MenuItem x:Name="MenuItemAddClient" Header="_Add..."
+                              IsEnabled="False"/>
+                </MenuItem>
+                <MenuItem Header="_Employees">
+                    <MenuItem x:Name="MenuItemViewEmployees" Header="_View/Manage..."/>
+                    <MenuItem x:Name="MenuItemAddEmployee" Header="_Add..."/>
+                </MenuItem>
+                <MenuItem Header="_Suppliers">
+                    <MenuItem x:Name="MenuItemViewSuppliers" Header="_View/Manage..."
+                              IsEnabled="False"/>
+                    <MenuItem x:Name="MenuItemAddSupplier" Header="_Add..."
+                              IsEnabled="False"/>
+                </MenuItem>
+                <MenuItem Header="_Branches">
+                    <MenuItem x:Name="MenuItemViewBranches" Header="_View/Manage..."
+                              IsEnabled="False"/>
+                    <MenuItem x:Name="MenuItemAddBranch" Header="_Add..."
+                              IsEnabled="False"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
+            <Button x:Name="ButtonClients" Content="Clients" IsEnabled="False"
+                    FontSize="20" Width="175" Height="40" Margin="8,24,8,0"/>
+            <Button x:Name="ButtonEmployees" Content="Employees" FontSize="20"
+                    Width="175" Height="40" Margin="8,8,8,0"/>
+            <Button x:Name="ButtonSuppliers" Content="Suppliers" IsEnabled="False"
+                    FontSize="20" Width="175" Height="40" Margin="8,8,8,0"/>
+            <Button x:Name="ButtonBranches" Content="Branches" IsEnabled="False"
+                    FontSize="20" Width="175" Height="40" Margin="8,8,8,0"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
+            <Image Source="images/IOTLogo.png" Width="250" Stretch="UniformToFill"
+                   Margin="8,8,8,0"/>
+            <TextBlock Text="We provide a wide range of technology services, including
+software development, 3D designs and printing. Our goal is to make IT Incredibly Obvious
+for our clients. We work hand-in-hand with clients to ensure the services and products we
+supply meet their needs. Efficiency, user friendliness and ease of use are our top
+goals." TextWrapping="Wrap" Margin="8,8,8,0"/>
+            <TextBlock Text="Why Didn't I Think Of That!?" Margin="8,20,8,0"
+                       FontFamily="Brush Script MT" FontSize="24"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </Window>
