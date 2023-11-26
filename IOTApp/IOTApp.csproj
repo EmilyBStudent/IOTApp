@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MySqlConnector" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="images\IOTLogo.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

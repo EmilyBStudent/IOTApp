@@ -20,9 +20,16 @@ namespace IOTApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Database _db;
+
+        /// <summary>
+        /// Initialise the window by creating a connection to the database and storing
+        /// it.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+            _db = new Database();
         }
 
         /// <summary>
