@@ -45,5 +45,23 @@ namespace IOTApp
         /// The name of the branch the employee works at.
         /// </summary>
         public string BranchName { get; set; }
+
+        /// <summary>
+        /// Return the employee's full name formatted as a string.
+        /// </summary>
+        /// <returns></returns>
+        public string GetFullName()
+        {
+            return $"{GivenName} {FamilyName}";
+        }
+
+        /// <summary>
+        /// Represent the Employee as a string by returning the employee's full name.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return GetFullName();
+        }
     }
 }
