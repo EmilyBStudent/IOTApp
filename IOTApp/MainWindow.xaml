@@ -36,7 +36,8 @@
                 <MenuItem Header="_Employees">
                     <MenuItem x:Name="MenuItemViewEmployees" Header="_View/Manage..."
                               Click="MenuItemViewEmployees_Click"/>
-                    <MenuItem x:Name="MenuItemAddEmployee" Header="_Add..."/>
+                    <MenuItem x:Name="MenuItemAddEmployee" Header="_Add..."
+                              Click="MenuItemAddEmployee_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Suppliers">
                     <MenuItem x:Name="MenuItemViewSuppliers" Header="_View/Manage..."
