@@ -347,7 +347,7 @@ namespace IOTApp
         /// <param name="e"></param>
         private void ButtonAddEmployee_Click(object sender, RoutedEventArgs e)
         {
-            AddEditEmployeeWindow win = new();
+            AddEditEmployeeWindow win = new(_db);
             win.Owner = this;
             win.ShowDialog();
         }
