@@ -47,9 +47,12 @@
                              VerticalAlignment="Center"
                              TextChanged="TextBoxSearchName_TextChanged"/>
                     <CheckBox x:Name="CheckBoxFilterBranch" Content="Show only branch"
-                              VerticalAlignment="Center" Margin="24,0,0,0"/>
+                              VerticalAlignment="Center" Margin="24,0,0,0"
+                              Checked="CheckBoxFilterBranch_Checked"
+                              Unchecked="CheckBoxFilterBranch_Unchecked"/>
                     <ComboBox x:Name="ComboBoxBranch" Width="100" IsEnabled="False"
-                              VerticalAlignment="Center" Margin="8,0,0,0"/>
+                              VerticalAlignment="Center" Margin="8,0,0,0"
+                              SelectionChanged="ComboBoxBranch_SelectionChanged"/>
                 </StackPanel>
             
                 <StackPanel Orientation="Horizontal">

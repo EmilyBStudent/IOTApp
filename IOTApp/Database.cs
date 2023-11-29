@@ -106,5 +106,38 @@ namespace IOTApp
                 Close();
             }
         }
+
+        /// <summary>
+        /// Query the branches table using the given SQL string.
+        /// </summary>
+        /// <param name="sql">The SQL query to run.</param>
+        /// <returns></returns>
+        public List<Branch> QueryBranches(string sql)
+        {
+            List<Branch> branches = new();
+            try
+            {
+                Open();
+                MySqlCommand cmd = new(sql, _conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    int id = int.Parse(rdr["id"].ToString());
+                    string name = rdr["branch_name"].ToString();
+                    Branch branch = new(id, name);
+                    branches.Add(branch);
+                }
+                return branches;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return branches;
+            }
+            finally
+            {
+                Close();
+            }
+        }
     }
 }

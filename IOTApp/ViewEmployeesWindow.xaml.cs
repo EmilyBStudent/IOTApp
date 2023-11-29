@@ -32,6 +32,18 @@ namespace IOTApp
             InitializeComponent();
             _db = db;
             FillEmployeesDataGrid();
+            FillBranchComboBox();
+        }
+
+        /// <summary>
+        /// Get a list of company branches and assign it as the Branch Search combo
+        /// box's item source.
+        /// </summary>
+        private void FillBranchComboBox()
+        {
+            string sql = "SELECT id, branch_name FROM branches;";
+            List<Branch> branches = _db.QueryBranches(sql);
+            ComboBoxBranch.ItemsSource = branches;
         }
 
         /// <summary>
@@ -41,35 +53,59 @@ namespace IOTApp
         private void FillEmployeesDataGrid()
         {
             DataGridEmployeeList.DataContext = null;
+            string sql = BuildEmployeesSQLQuery();
+            List<Employee> employees = _db.QueryEmployees(sql);
+            DataGridEmployeeList.DataContext = employees;
+        }
+
+        /// <summary>
+        /// Build a SQL string to query the employees table for a list of employees,
+        /// dependent on the search/filter options in use.
+        /// </summary>
+        /// <returns>The completed SQL query.</returns>
+        private string BuildEmployeesSQLQuery()
+        {
             string sql = "SELECT e.id, e.given_name, e.family_name, e.date_of_birth, " +
                 "e.gender_identity, e.gross_salary, b.branch_name, CONCAT(s.given_name," +
                 " ' ', s.family_name) AS supervisor_name FROM employees AS e " +
                 "LEFT JOIN branches AS b ON e.branch_id = b.id " +
                 "LEFT JOIN employees AS s ON e.supervisor_id = s.id ";
 
-            // Search/filter employees by name.
+            // Search/filter employees if any of the search/filter fields are in use.
             string searchName = TextBoxSearchName.Text.Trim();
-            if (searchName.Length > 0)
+            Branch? searchBranch = (Branch)ComboBoxBranch.SelectedItem;
+            if ((searchName.Length > 0) || (searchBranch != null))
             {
                 sql = sql + "WHERE ";
-                // Allow the user to search both given name and family name fields
-                // simultaneously.
-                string[] names = searchName.Split(' ');
-                for (int i = 0; i < names.Length; i++)
+
+                // Search/filter employees by name.
+                if (searchName.Length > 0)
                 {
-                    sql = sql + $"(e.given_name LIKE '%{names[i]}%' OR " +
-                        $"e.family_name LIKE '%{names[i]}%') ";
-                    if (i < names.Length - 1)
+                    // Allow the user to search both given name and family name fields
+                    // simultaneously.
+                    string[] names = searchName.Split(' ');
+                    for (int i = 0; i < names.Length; i++)
+                    {
+                        sql = sql + $"(e.given_name LIKE '%{names[i]}%' OR " +
+                            $"e.family_name LIKE '%{names[i]}%') ";
+                        if (i < names.Length - 1)
+                            sql = sql + "AND ";
+                    }
+                }
+
+                // Search/filter employees by branch.
+                if (searchBranch != null)
+                {
+                    if (searchName.Length > 0)
                         sql = sql + "AND ";
+                    int branchId = searchBranch.Id;
+                    sql = sql + $"b.id = {branchId} ";
                 }
             }
 
             // Sort employees by family and given name.
             sql = sql + "ORDER BY e.family_name, e.given_name, e.id;";
-
-            // Perform SQL query and assign result as the source of the DataGrid.
-            List<Employee> employees = _db.QueryEmployees(sql);
-            DataGridEmployeeList.DataContext = employees;
+            return sql;
         }
 
         /// <summary>
@@ -89,6 +125,39 @@ namespace IOTApp
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TextBoxSearchName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FillEmployeesDataGrid();
+        }
+
+        /// <summary>
+        /// Enable the branch search combo box when the checkbox is checked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckBoxFilterBranch_Checked(object sender, RoutedEventArgs e)
+        {
+            ComboBoxBranch.IsEnabled = true;
+        }
+
+        /// <summary>
+        /// Disable the branch search combo box and remove its current selection when the
+        /// checkbox is unchecked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckBoxFilterBranch_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ComboBoxBranch.IsEnabled = false;
+            ComboBoxBranch.SelectedItem = null;
+        }
+
+        /// <summary>
+        /// When the selected item in the Branch Search combo box changes, refresh the
+        /// employee list in the DataGrid with the latest search/filter options.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ComboBoxBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FillEmployeesDataGrid();
         }
