@@ -36,7 +36,7 @@
         <Button x:Name="ButtonClose" Content="Close" Height="30" Width="75"
                 Margin="8,0,8,0" Grid.Column="2" Grid.Row="1"
                 HorizontalAlignment="Right" VerticalAlignment="Top"
-                Click="ButtonClose_Click"/>
+                IsCancel="True" Click="ButtonClose_Click"/>
 
         <GroupBox Header="Search/Filter Employees" Margin="0,0,0,0" Grid.Column="1"
                     Grid.Row="2" Grid.ColumnSpan="2">
