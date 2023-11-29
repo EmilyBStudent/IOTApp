@@ -161,5 +161,18 @@ namespace IOTApp
         {
             FillEmployeesDataGrid();
         }
+
+        /// <summary>
+        /// Clear all filters and show the full employee list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonClearFilters_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxSearchName.Clear();
+            TextBoxMinSalary.Clear();
+            TextBoxMaxSalary.Clear();
+            CheckBoxFilterBranch.IsChecked = false;
+        }
     }
 }
