@@ -71,24 +71,24 @@ namespace IOTApp
                 {
                     // Read in the values from each field and parse as the appropriate
                     // type.
-                    int id = int.Parse(rdr[0].ToString());
-                    string givenName = rdr[1].ToString();
-                    string familyName = rdr[2].ToString();
-                    string gender = rdr[4].ToString();
-                    int salary = int.Parse(rdr[5].ToString());
+                    int id = int.Parse(rdr["id"].ToString());
+                    string givenName = rdr["given_name"].ToString();
+                    string familyName = rdr["family_name"].ToString();
+                    string gender = rdr["gender_identity"].ToString();
+                    int salary = int.Parse(rdr["gross_salary"].ToString());
 
                     // Parse out the date portion of the date string.
                     string[] dateStrs;
-                    dateStrs = rdr[3].ToString().Split(" ");
+                    dateStrs = rdr["date_of_birth"].ToString().Split(" ");
                     DateOnly dob = DateOnly.Parse(dateStrs[0]);
 
                     // Make sure the branch and supervisor are not null.
                     string branch = String.Empty;
-                    if (rdr[6] != null)
-                        branch = rdr[6].ToString();
+                    if (rdr["branch_name"] != null)
+                        branch = rdr["branch_name"].ToString();
                     string supervisor = String.Empty;
-                    if (rdr[7] != null)
-                        supervisor = rdr[7].ToString();
+                    if (rdr["supervisor_name"] != null)
+                        supervisor = rdr["supervisor_name"].ToString();
 
                     Employee emp = new(id, givenName, familyName, dob, gender, salary,
                         supervisor, branch);
