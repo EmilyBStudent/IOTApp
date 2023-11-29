@@ -35,7 +35,8 @@ namespace IOTApp
         }
 
         /// <summary>
-        /// Fill the employee list data grid with the employees' data.
+        /// Fill the employee list data grid with the employees' data, filtering by the
+        /// selected search/filter options if relevant.
         /// </summary>
         private void FillEmployeesDataGrid()
         {
@@ -44,8 +45,29 @@ namespace IOTApp
                 "e.gender_identity, e.gross_salary, b.branch_name, CONCAT(s.given_name," +
                 " ' ', s.family_name) AS supervisor_name FROM employees AS e " +
                 "LEFT JOIN branches AS b ON e.branch_id = b.id " +
-                "LEFT JOIN employees AS s ON e.supervisor_id = s.id " +
-                "ORDER BY e.family_name, e.given_name, e.id;";
+                "LEFT JOIN employees AS s ON e.supervisor_id = s.id ";
+
+            // Search/filter employees by name.
+            string searchName = TextBoxSearchName.Text.Trim();
+            if (searchName.Length > 0)
+            {
+                sql = sql + "WHERE ";
+                // Allow the user to search both given name and family name fields
+                // simultaneously.
+                string[] names = searchName.Split(' ');
+                for (int i = 0; i < names.Length; i++)
+                {
+                    sql = sql + $"(e.given_name LIKE '%{names[i]}%' OR " +
+                        $"e.family_name LIKE '%{names[i]}%') ";
+                    if (i < names.Length - 1)
+                        sql = sql + "AND ";
+                }
+            }
+
+            // Sort employees by family and given name.
+            sql = sql + "ORDER BY e.family_name, e.given_name, e.id;";
+
+            // Perform SQL query and assign result as the source of the DataGrid.
             List<Employee> employees = _db.QueryEmployees(sql);
             DataGridEmployeeList.DataContext = employees;
         }
@@ -60,9 +82,15 @@ namespace IOTApp
             Close();
         }
 
-        private void DataGridEmployeeList_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        /// <summary>
+        /// Search/filter the employee list by name when the text in the Search Name
+        /// textbox changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBoxSearchName_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            FillEmployeesDataGrid();
         }
     }
 }
