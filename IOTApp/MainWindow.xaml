@@ -34,7 +34,8 @@
                               IsEnabled="False"/>
                 </MenuItem>
                 <MenuItem Header="_Employees">
-                    <MenuItem x:Name="MenuItemViewEmployees" Header="_View/Manage..."/>
+                    <MenuItem x:Name="MenuItemViewEmployees" Header="_View/Manage..."
+                              Click="MenuItemViewEmployees_Click"/>
                     <MenuItem x:Name="MenuItemAddEmployee" Header="_Add..."/>
                 </MenuItem>
                 <MenuItem Header="_Suppliers">
@@ -57,7 +58,7 @@
             <Button x:Name="ButtonClients" Content="Clients" IsEnabled="False"
                     FontSize="20" Width="175" Height="40" Margin="8,24,8,0"/>
             <Button x:Name="ButtonEmployees" Content="Employees" FontSize="20"
-                    Width="175" Height="40" Margin="8,8,8,0"/>
+                    Width="175" Height="40" Margin="8,8,8,0" Click="ButtonEmployees_Click"/>
             <Button x:Name="ButtonSuppliers" Content="Suppliers" IsEnabled="False"
                     FontSize="20" Width="175" Height="40" Margin="8,8,8,0"/>
             <Button x:Name="ButtonBranches" Content="Branches" IsEnabled="False"

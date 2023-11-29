@@ -10,7 +10,7 @@ namespace IOTApp
     /// <summary>
     /// A branch of the company.
     /// </summary>
-    class Branch
+    public class Branch
     {
         /// <summary>
         /// The unique ID number of the branch.

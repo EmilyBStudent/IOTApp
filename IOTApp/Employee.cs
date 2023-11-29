@@ -10,7 +10,7 @@ namespace IOTApp
     /// An employee record. This does not include all information from the database, and
     /// it summarises some information in a readable form.
     /// </summary>
-    class Employee
+    public class Employee
     {
         /// <summary>
         /// The employee's unique ID.
@@ -32,7 +32,7 @@ namespace IOTApp
         /// The employee's gender identity represented as a single character. Valid
         /// identity codes are M, F, and O (for Other).
         /// </summary>
-        public char GenderIdentity { get; set; }
+        public string GenderIdentity { get; set; }
         /// <summary>
         /// The employee's annual salary before tax.
         /// </summary>
@@ -63,7 +63,7 @@ namespace IOTApp
         /// <param name="branch">The employee's branch, if known. Can be null or
         /// omitted.</param>
         public Employee(int id, string givenName, string familyName, DateOnly dob,
-            char gender, int salary, string? supervisor="", string? branch="")
+            string gender, int salary, string? supervisor="", string? branch="")
         {
             Id = id;
             GivenName = givenName;
@@ -91,6 +91,33 @@ namespace IOTApp
         public string GetFullName()
         {
             return $"{GivenName} {FamilyName}";
+        }
+
+        /// <summary>
+        /// Format the salary as a currency string, starting with a dollar sign and
+        /// separating the thousands with commas.
+        /// </summary>
+        /// <returns>The employee's salary, formatted as currency.</returns>
+        public string GetSalaryAsCurrency()
+        {
+            string origSalary = GrossSalary.ToString();
+            string formattedSalary = String.Empty;
+
+            // Starting from the end of the salary number string, copy one digit at a
+            // time to the formatted string, inserting a comma every 3 digits.
+            for (int i = origSalary.Length - 1; i < 0; i--)
+            {
+                formattedSalary = origSalary.Substring(i, 1) + formattedSalary;
+                /// Add a comma between every 3 digits.
+                if ((origSalary.Length - 1 - i) % 3 == 0)
+                    formattedSalary = "," + formattedSalary;
+            }
+
+            // Ensure we didn't finish with a comma, then add the dollar sign.
+            if (formattedSalary.Substring(0, 1) == ",")
+                formattedSalary = formattedSalary.Substring(1);
+            formattedSalary = "$" + formattedSalary;
+            return formattedSalary;
         }
 
         /// <summary>

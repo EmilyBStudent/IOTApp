@@ -1,0 +1,102 @@
+﻿<Window x:Class="IOTApp.ViewEmployeesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IOTApp"
+        mc:Ignorable="d"
+        Title="View Employees" Height="450" Width="800" MinWidth="550" MinHeight="350"
+        ShowInTaskbar="False">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+            <Button x:Name="ButtonAddEmployee" Content="Add" Height="30" Width="75"
+                    Margin="0,0,0,0"/>
+            <Button x:Name="ButtonEditEmployee" Content="Edit" Height="30" Width="75"
+                    Margin="8,0,0,0"/>
+            <Button x:Name="ButtonViewSales" Content="View Sales" Height="30"
+                    Width="75" Margin="8,0,0,0"/>
+            <Button x:Name="ButtonDeleteEmployee" Content="Delete" Height="30" Width="75"
+                    Margin="8,0,0,0"/>
+        </StackPanel>
+
+        <Button x:Name="ButtonClose" Content="Close" Height="30" Width="75"
+                Margin="8,0,7,0" Grid.Column="2" Grid.Row="1"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                IsCancel="True" Click="ButtonClose_Click"/>
+
+        <GroupBox Header="Search/Filter Employees" Margin="0,0,0,0" Grid.Column="1"
+                    Grid.Row="2" Grid.ColumnSpan="2">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Search employee name:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="TextBoxSearchName" Width="100"
+                             VerticalAlignment="Center"
+                             TextChanged="TextBoxSearchName_TextChanged"/>
+                    <CheckBox x:Name="CheckBoxFilterBranch" Content="Show only branch"
+                              VerticalAlignment="Center" Margin="24,0,0,0"
+                              Checked="CheckBoxFilterBranch_Checked"
+                              Unchecked="CheckBoxFilterBranch_Unchecked"/>
+                    <ComboBox x:Name="ComboBoxBranch" Width="100" IsEnabled="False"
+                              VerticalAlignment="Center" Margin="8,0,0,0"
+                              SelectionChanged="ComboBoxBranch_SelectionChanged"/>
+                </StackPanel>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Orientation="Horizontal" Grid.Column="0">
+                        <Label Content="Salary between:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TextBoxMinSalary" Width="75"
+                                 VerticalAlignment="Center"
+                                 TextChanged="TextBoxMinSalary_TextChanged"
+                                 LostFocus="TextBoxMinSalary_LostFocus"/>
+                        <Label Content="and:"/>
+                        <TextBox x:Name="TextBoxMaxSalary" Width="75"
+                                 VerticalAlignment="Center"
+                                 TextChanged="TextBoxMaxSalary_TextChanged"
+                                 LostFocus="TextBoxMaxSalary_LostFocus"/>
+                    </StackPanel>
+
+                    <Button x:Name="ButtonClearFilters" Content="Clear Filters"
+                                Height="30" Width="75" Grid.Column="1"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Click="ButtonClearFilters_Click"/>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+        <DataGrid x:Name="DataGridEmployeeList" Grid.Row="3" Grid.Column="1"
+                  Grid.ColumnSpan="2" IsReadOnly="True" SelectionMode="Single"
+                  ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,8,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Given Name" Binding="{Binding GivenName}"/>
+                <DataGridTextColumn Header="Family Name" Binding="{Binding FamilyName}"/>
+                <DataGridTextColumn Header="Date of Birth"
+                                    Binding="{Binding DateOfBirth}"/>
+                <DataGridTextColumn Header="Gender" Binding="{Binding GenderIdentity}"/>
+                <DataGridTextColumn Header="Gross Salary"
+                                    Binding="{Binding GrossSalary}"/>
+                <DataGridTextColumn Header="Branch" Binding="{Binding BranchName}"/>
+                <DataGridTextColumn Header="Supervisor"
+                                    Binding="{Binding SupervisorName}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
