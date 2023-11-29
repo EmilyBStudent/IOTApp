@@ -66,12 +66,12 @@
                         <TextBox x:Name="TextBoxMinSalary" Width="75"
                                  VerticalAlignment="Center"
                                  TextChanged="TextBoxMinSalary_TextChanged"
-                                 LostFocus="TextBoxSalary_LostFocus"/>
+                                 LostFocus="TextBoxMinSalary_LostFocus"/>
                         <Label Content="and:"/>
                         <TextBox x:Name="TextBoxMaxSalary" Width="75"
                                  VerticalAlignment="Center"
                                  TextChanged="TextBoxMaxSalary_TextChanged"
-                                 LostFocus="TextBoxSalary_LostFocus"/>
+                                 LostFocus="TextBoxMaxSalary_LostFocus"/>
                     </StackPanel>
 
                     <Button x:Name="ButtonClearFilters" Content="Clear Filters"

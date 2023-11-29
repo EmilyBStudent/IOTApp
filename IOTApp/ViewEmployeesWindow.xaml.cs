@@ -1,6 +1,7 @@
 ﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -140,85 +141,62 @@ namespace IOTApp
         /// Validate the data in the salary search fields. If appropriate, show an error
         /// to the user to explain the problem.
         /// </summary>
+        /// <param name="textbox">The salary textbox to validate.</param>
         /// <param name="showErrors">If true, will show an error to the user for the
         /// first validation issue found.</param>
         /// <returns>True if the salary search data is valid, false if invalid.</returns>
-        private bool ValidateSalaryFields(bool showErrors = true)
+        private bool ValidateSalaryFields(TextBox textbox, bool showErrors = true)
         {
-            string minSalaryText = TextBoxMinSalary.Text.Trim();
-            string maxSalaryText = TextBoxMaxSalary.Text.Trim();
-
-            if ((minSalaryText.Length == 0) && (maxSalaryText.Length == 0))
+            // A blank is a valid value as it simply means "no minimum" or "no
+            // maximum".
+            if (String.IsNullOrWhiteSpace(textbox.Text))
             {
-                // A blank is a valid value as it simply means "no minimum" or "no
-                // maximum".
                 return true;
             }
 
-            int minSalary = 0, maxSalary = int.MaxValue;
-            bool validMin = false, validMax = false;
- 
-            // Validate the minimum salary field.
-            if (minSalaryText.Length > 0)
-            {
-                validMin = int.TryParse(minSalaryText, out minSalary);
-                if (!validMin)
-                {
-                    if (showErrors)
-                    {
-                        string msg = "The minimum salary to search for must be a valid " +
-                            "integer. Please do not include any punctuation or " +
-                            "decimals.";
-                        string caption = "Minimum salary not valid";
-                        MessageBox.Show(msg, caption, MessageBoxButton.OK,
-                            MessageBoxImage.Exclamation);
-                    }
-                    return false;
-                }
-                else if (minSalary < 0)
-                {
-                    if (showErrors)
-                    {
-                        string msg = "The minimum salary cannot be negative.";
-                        string caption = "Minimum salary not valid";
-                        MessageBox.Show(msg, caption, MessageBoxButton.OK,
-                            MessageBoxImage.Exclamation);
-                    }
-                    return false;
-                }
-            }
+            // Parse textbox value as an int if possible and record the context for
+            // validation.
+            string salaryText = textbox.Text.Trim();
+            int salaryVal;
+            bool validInt = false;
+            validInt = int.TryParse(salaryText, out salaryVal);
+            string valType = String.Empty;
+            if (textbox == TextBoxMinSalary)
+                valType = "minimum";
+            else
+                valType = "maximum";
+            var textInfo = new CultureInfo("en-US", false).TextInfo;
 
-            // Validate the maximum salary field.
-            if (maxSalaryText.Length > 0)
+            if (!validInt)
             {
-                validMax = int.TryParse(maxSalaryText, out maxSalary);
-                if (!validMax)
+                if (showErrors)
                 {
-                    if (showErrors)
-                    {
-                        string msg = "The maximum salary to search for must be a valid " +
-                            "integer. Please do not include any punctuation or " +
-                            "decimals.";
-                        string caption = "Maximum salary not valid";
-                        MessageBox.Show(msg, caption, MessageBoxButton.OK,
-                            MessageBoxImage.Exclamation);
-                    }
-                    return false;
+                    string msg = $"The {valType} salary to search for must be a valid " +
+                        "integer. Please do not include any punctuation or " +
+                        "decimals.";
+                    string caption = $"{textInfo.ToTitleCase(valType)} salary not valid";
+                    MessageBox.Show(msg, caption, MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation);
                 }
-                else if (maxSalary < 0)
+                return false;
+            }
+            else if (salaryVal < 0)
+            {
+                if (showErrors)
                 {
-                    if (showErrors)
-                    {
-                        string msg = "The maximum salary cannot be negative.";
-                        string caption = "Maximum salary not valid";
-                        MessageBox.Show(msg, caption, MessageBoxButton.OK,
-                            MessageBoxImage.Exclamation);
-                    }
-                    return false;
+                    string msg = $"The {valType} salary cannot be negative.";
+                    string caption = $"{textInfo.ToTitleCase(valType)} salary not valid";
+                    MessageBox.Show(msg, caption, MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation);
                 }
+                return false;
             }
 
             // Validate min and max as a range (min must be lower than max).
+            int minSalary = 0, maxSalary = int.MaxValue;
+            bool validMin, validMax;
+            validMin = int.TryParse(TextBoxMinSalary.Text.Trim(), out minSalary);
+            validMax = int.TryParse(TextBoxMaxSalary.Text.Trim(), out maxSalary);
             if (validMin && validMax && (minSalary >= maxSalary))
             {
                 if (showErrors)
@@ -299,6 +277,7 @@ namespace IOTApp
             TextBoxMinSalary.Clear();
             TextBoxMaxSalary.Clear();
             CheckBoxFilterBranch.IsChecked = false;
+            FillEmployeesDataGrid();
         }
 
         /// <summary>
@@ -310,8 +289,7 @@ namespace IOTApp
         /// <param name="e"></param>
         private void TextBoxMinSalary_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string minSalaryText = TextBoxMinSalary.Text.Trim();
-            if (int.TryParse(minSalaryText, out int minSalary))
+            if (ValidateSalaryFields(TextBoxMinSalary, false))
             {
                 FillEmployeesDataGrid();
             }
@@ -326,21 +304,40 @@ namespace IOTApp
         /// <param name="e"></param>
         private void TextBoxMaxSalary_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (ValidateSalaryFields(false))
+            if (ValidateSalaryFields(TextBoxMaxSalary, false))
             {
                 FillEmployeesDataGrid();
             }
         }
 
         /// <summary>
-        /// When the user moves focus away from the minimum or maximum salary textbox,
+        /// When the user moves focus away from the minimum salary textbox,
         /// validate the data. If the data is invalid, show the user an error.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TextBoxSalary_LostFocus(object sender, RoutedEventArgs e)
+        private void TextBoxMinSalary_LostFocus(object sender, RoutedEventArgs e)
         {
-            ValidateSalaryFields(true);
+            // Skip validation if the textbox losing focus is empty.
+            if (!String.IsNullOrWhiteSpace(TextBoxMinSalary.Text))
+            {
+                ValidateSalaryFields(TextBoxMinSalary, true);
+            }
+        }
+
+        /// <summary>
+        /// When the user moves focus away from the maximum salary textbox,
+        /// validate the data. If the data is invalid, show the user an error.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBoxMaxSalary_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Skip validation if the textbox losing focus is empty.
+            if (!String.IsNullOrWhiteSpace(TextBoxMaxSalary.Text))
+            {
+                ValidateSalaryFields(TextBoxMaxSalary, true);
+            }
         }
     }
 }
