@@ -71,10 +71,19 @@ namespace IOTApp
                 "LEFT JOIN branches AS b ON e.branch_id = b.id " +
                 "LEFT JOIN employees AS s ON e.supervisor_id = s.id ";
 
-            // Search/filter employees if any of the search/filter fields are in use.
+            // Parse and store search/filter settings.
             string searchName = TextBoxSearchName.Text.Trim();
             Branch? searchBranch = (Branch)ComboBoxBranch.SelectedItem;
-            if ((searchName.Length > 0) || (searchBranch != null))
+            string minSalaryText = TextBoxMinSalary.Text.Trim();
+            string maxSalaryText = TextBoxMaxSalary.Text.Trim();
+            int minSalary, maxSalary;
+            bool validMax = false, validMin = false;
+            validMin = int.TryParse(minSalaryText, out minSalary);
+            validMax = int.TryParse(maxSalaryText, out maxSalary);
+
+            // Search/filter employees if any of the search/filter fields are in use.
+            if ((searchName.Length > 0) || (searchBranch != null) ||
+                validMin || validMax)
             {
                 sql = sql + "WHERE ";
 
@@ -101,11 +110,128 @@ namespace IOTApp
                     int branchId = searchBranch.Id;
                     sql = sql + $"b.id = {branchId} ";
                 }
+
+                // Search/filter employees by minimum salary.
+                if (validMin)
+                {
+                    if ((searchName.Length > 0) || (searchBranch != null))
+                        sql = sql + "AND ";
+                    sql = sql + $"e.gross_salary > {minSalary} ";
+                }
+
+                // Search/filter employees by maximum salary.
+                if (validMax)
+                {
+                    if ((searchName.Length > 0) || (searchBranch != null) ||
+                        validMin)
+                    {
+                        sql = sql + "AND ";
+                    }
+                    sql = sql + $"e.gross_salary < {maxSalary} ";
+                }
             }
 
             // Sort employees by family and given name.
             sql = sql + "ORDER BY e.family_name, e.given_name, e.id;";
             return sql;
+        }
+
+        /// <summary>
+        /// Validate the data in the salary search fields. If appropriate, show an error
+        /// to the user to explain the problem.
+        /// </summary>
+        /// <param name="showErrors">If true, will show an error to the user for the
+        /// first validation issue found.</param>
+        /// <returns>True if the salary search data is valid, false if invalid.</returns>
+        private bool ValidateSalaryFields(bool showErrors = true)
+        {
+            string minSalaryText = TextBoxMinSalary.Text.Trim();
+            string maxSalaryText = TextBoxMaxSalary.Text.Trim();
+
+            if ((minSalaryText.Length == 0) && (maxSalaryText.Length == 0))
+            {
+                // A blank is a valid value as it simply means "no minimum" or "no
+                // maximum".
+                return true;
+            }
+
+            int minSalary = 0, maxSalary = int.MaxValue;
+            bool validMin = false, validMax = false;
+ 
+            // Validate the minimum salary field.
+            if (minSalaryText.Length > 0)
+            {
+                validMin = int.TryParse(minSalaryText, out minSalary);
+                if (!validMin)
+                {
+                    if (showErrors)
+                    {
+                        string msg = "The minimum salary to search for must be a valid " +
+                            "integer. Please do not include any punctuation or " +
+                            "decimals.";
+                        string caption = "Minimum salary not valid";
+                        MessageBox.Show(msg, caption, MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation);
+                    }
+                    return false;
+                }
+                else if (minSalary < 0)
+                {
+                    if (showErrors)
+                    {
+                        string msg = "The minimum salary cannot be negative.";
+                        string caption = "Minimum salary not valid";
+                        MessageBox.Show(msg, caption, MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation);
+                    }
+                    return false;
+                }
+            }
+
+            // Validate the maximum salary field.
+            if (maxSalaryText.Length > 0)
+            {
+                validMax = int.TryParse(maxSalaryText, out maxSalary);
+                if (!validMax)
+                {
+                    if (showErrors)
+                    {
+                        string msg = "The maximum salary to search for must be a valid " +
+                            "integer. Please do not include any punctuation or " +
+                            "decimals.";
+                        string caption = "Maximum salary not valid";
+                        MessageBox.Show(msg, caption, MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation);
+                    }
+                    return false;
+                }
+                else if (maxSalary < 0)
+                {
+                    if (showErrors)
+                    {
+                        string msg = "The maximum salary cannot be negative.";
+                        string caption = "Maximum salary not valid";
+                        MessageBox.Show(msg, caption, MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation);
+                    }
+                    return false;
+                }
+            }
+
+            // Validate min and max as a range (min must be lower than max).
+            if (validMin && validMax && (minSalary >= maxSalary))
+            {
+                if (showErrors)
+                {
+                    string msg = "The minimum salary must be lower than the maximum salary.";
+                    string caption = "Salary range not valid";
+                    MessageBox.Show(msg, caption, MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation);
+                }
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -173,6 +299,48 @@ namespace IOTApp
             TextBoxMinSalary.Clear();
             TextBoxMaxSalary.Clear();
             CheckBoxFilterBranch.IsChecked = false;
+        }
+
+        /// <summary>
+        /// If the text in the minimum salary search box has changed, check whether the
+        /// box contents are a valid int. If so, use the data entered to filter the
+        /// employee list. Otherwise, ignore.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBoxMinSalary_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string minSalaryText = TextBoxMinSalary.Text.Trim();
+            if (int.TryParse(minSalaryText, out int minSalary))
+            {
+                FillEmployeesDataGrid();
+            }
+        }
+
+        /// <summary>
+        /// If the text in the maximum salary search box has changed, check whether the
+        /// box contents are a valid int. If so, use the data entered to filter the
+        /// employee list. Otherwise, ignore.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBoxMaxSalary_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ValidateSalaryFields(false))
+            {
+                FillEmployeesDataGrid();
+            }
+        }
+
+        /// <summary>
+        /// When the user moves focus away from the minimum or maximum salary textbox,
+        /// validate the data. If the data is invalid, show the user an error.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBoxSalary_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ValidateSalaryFields(true);
         }
     }
 }

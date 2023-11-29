@@ -64,10 +64,14 @@
                     <StackPanel Orientation="Horizontal" Grid.Column="0">
                         <Label Content="Salary between:" VerticalAlignment="Center"/>
                         <TextBox x:Name="TextBoxMinSalary" Width="75"
-                                 VerticalAlignment="Center"/>
+                                 VerticalAlignment="Center"
+                                 TextChanged="TextBoxMinSalary_TextChanged"
+                                 LostFocus="TextBoxSalary_LostFocus"/>
                         <Label Content="and:"/>
                         <TextBox x:Name="TextBoxMaxSalary" Width="75"
-                                 VerticalAlignment="Center"/>
+                                 VerticalAlignment="Center"
+                                 TextChanged="TextBoxMaxSalary_TextChanged"
+                                 LostFocus="TextBoxSalary_LostFocus"/>
                     </StackPanel>
 
                     <Button x:Name="ButtonClearFilters" Content="Clear Filters"
