@@ -44,7 +44,8 @@
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Search employee name:" VerticalAlignment="Center"/>
                     <TextBox x:Name="TextBoxSearchName" Width="100"
-                             VerticalAlignment="Center"/>
+                             VerticalAlignment="Center"
+                             TextChanged="TextBoxSearchName_TextChanged"/>
                     <CheckBox x:Name="CheckBoxFilterBranch" Content="Show only branch"
                               VerticalAlignment="Center" Margin="24,0,0,0"/>
                     <ComboBox x:Name="ComboBoxBranch" Width="100" IsEnabled="False"
