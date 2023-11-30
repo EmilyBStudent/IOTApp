@@ -42,8 +42,7 @@ namespace IOTApp
         /// </summary>
         private void FillBranchComboBox()
         {
-            string sql = "SELECT id, branch_name FROM branches;";
-            List<Branch> branches = _db.QueryBranches(sql);
+            List<Branch> branches = _db.QueryBranches();
             ComboBoxBranch.ItemsSource = branches;
         }
 

@@ -117,12 +117,14 @@ namespace IOTApp
         }
 
         /// <summary>
-        /// Query the branches table using the given SQL string.
+        /// Query the branches table using the given SQL WHERE clause, if any.
         /// </summary>
-        /// <param name="sql">The SQL query to run.</param>
+        /// <param name="whereClause">The WHERE clause to append to the SQL
+        /// query.</param>
         /// <returns></returns>
-        public List<Branch> QueryBranches(string sql)
+        public List<Branch> QueryBranches(string whereClause = "")
         {
+            string sql = $"SELECT id, branch_name FROM branches {whereClause};";
             List<Branch> branches = new();
             try
             {

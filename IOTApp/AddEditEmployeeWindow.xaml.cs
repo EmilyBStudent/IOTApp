@@ -42,8 +42,7 @@ namespace IOTApp
         private void InitialiseAllModes()
         {
             // Fill the branch combo box with the list of branches.
-            string sql = "SELECT id, branch_name FROM branches;";
-            List<Branch> branches = _db.QueryBranches(sql);
+            List<Branch> branches = _db.QueryBranches();
             ComboBoxBranch.ItemsSource = branches;
 
             // Fill the supervisor combo box with a list of employees.
