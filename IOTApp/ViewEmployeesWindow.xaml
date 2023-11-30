@@ -115,7 +115,7 @@
                                     Binding="{Binding DateOfBirth, StringFormat={}{0:dd/MM/yyyy}}"/>
                 <DataGridTextColumn Header="Gender" Binding="{Binding GenderIdentity}"/>
                 <DataGridTextColumn Header="Gross Salary"
-                                    Binding="{Binding GrossSalary}"/>
+                                    Binding="{Binding GrossSalary, StringFormat={}{0:C0}}"/>
                 <DataGridTextColumn Header="Branch" Binding="{Binding BranchName}"/>
                 <DataGridTextColumn Header="Supervisor"
                                     Binding="{Binding SupervisorName}"/>
