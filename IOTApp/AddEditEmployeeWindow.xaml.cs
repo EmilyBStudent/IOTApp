@@ -182,6 +182,31 @@ namespace IOTApp
                     MessageBoxImage.Exclamation);
                 return false;
             }
+
+            // Validate date of birth as a date.
+            DateTime dob = (DateTime)DatePickerDateOfBirth.SelectedDate;
+            if (DateTime.Now < dob)
+            {
+                MessageBox.Show("The employee's date of birth cannot be a future date.",
+                    "Date of birth invalid", MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation);
+                return false;
+            }
+            else if (DateTime.Now.Year - dob.Year < 15)
+            {
+                MessageBox.Show("The employee is too young. Please check date of birth.",
+                    "Date of birth invalid", MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation);
+                return false;
+            }
+            else if (DateTime.Now.Year - dob.Year > 120)
+            {
+                MessageBox.Show("The employee is too old. Please check the date of birth.",
+                    "Date of birth invalid", MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation);
+                return false;
+            }
+
             return true;
         }
 
