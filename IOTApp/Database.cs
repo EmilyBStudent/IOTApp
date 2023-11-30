@@ -139,5 +139,31 @@ namespace IOTApp
                 Close();
             }
         }
+
+        /// <summary>
+        /// Execute the given SQL as a non-query (i.e. no results need to be returned).
+        /// </summary>
+        /// <param name="sql">The SQL to execute.</param>
+        /// <returns>True if the SQL executed without issues, false if an
+        /// exception occurred.</returns>
+        public bool ExecuteNonQuery(string sql)
+        {
+            try
+            {
+                Open();
+                MySqlCommand cmd = new(sql, _conn);
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+            finally
+            {
+                Close();
+            }
+        }
     }
 }

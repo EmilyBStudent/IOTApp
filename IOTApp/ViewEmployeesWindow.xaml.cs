@@ -350,6 +350,9 @@ namespace IOTApp
             AddEditEmployeeWindow win = new(_db);
             win.Owner = this;
             win.ShowDialog();
+
+            // After the dialog closes, refresh the employee list.
+            FillEmployeesDataGrid();
         }
     }
 }
