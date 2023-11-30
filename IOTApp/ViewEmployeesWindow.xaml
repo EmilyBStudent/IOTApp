@@ -30,7 +30,7 @@
             <Button x:Name="ButtonViewSales" Content="View Sales" Height="30"
                     Width="75" Margin="8,0,0,0"/>
             <Button x:Name="ButtonDeleteEmployee" Content="Delete" Height="30" Width="75"
-                    Margin="8,0,0,0"/>
+                    Margin="8,0,0,0" Click="ButtonDeleteEmployee_Click"/>
         </StackPanel>
 
         <Button x:Name="ButtonClose" Content="Close" Height="30" Width="75"
