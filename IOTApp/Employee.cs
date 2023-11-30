@@ -67,6 +67,20 @@ namespace IOTApp
         public string UpdatedDate { get; set; }
 
         /// <summary>
+        /// Construct an empty Employee.
+        /// </summary>
+        public Employee()
+        {
+            GivenName = string.Empty;
+            FamilyName = string.Empty;
+            GenderIdentity = string.Empty;
+            SupervisorName = string.Empty;
+            BranchName = string.Empty;
+            CreatedDate = string.Empty;
+            UpdatedDate = string.Empty;
+        }
+
+        /// <summary>
         /// Initialise the employee with the given details.
         /// </summary>
         /// <param name="id">The employee's unique ID number.</param>

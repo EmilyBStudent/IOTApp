@@ -24,6 +24,7 @@ namespace IOTApp
         private WindowMode _windowMode;
         private Employee? _employee;
         private List<Employee> _supervisors;
+        private Employee _nullSupervisor;
 
         /// <summary>
         /// Initialise the window in Add Mode.
@@ -73,10 +74,19 @@ namespace IOTApp
             List<Branch> branches = _db.QueryBranches();
             ComboBoxBranch.ItemsSource = branches;
 
-            // Fill the supervisor combo box with a list of employees.
+            // Fill the supervisor combo box with a list of employees, including a null
+            // supervisor for employees who have no supervisor.
             List<Employee> supervisors = _db.QueryEmployees();
+            Employee nullSuper = new()
+            {
+                Id = -1,
+                GivenName = "(no supervisor)",
+            };
+            _nullSupervisor = nullSuper;
+            supervisors.Insert(0, nullSuper);
             _supervisors = supervisors;
             ComboBoxSupervisor.ItemsSource = _supervisors;
+            ComboBoxSupervisor.SelectedItem = nullSuper;
         }
 
         /// <summary>
@@ -91,7 +101,12 @@ namespace IOTApp
             ComboBoxGender.Text = _employee.GenderIdentity;
             TextBoxSalary.Text = _employee.GrossSalary.ToString();
             ComboBoxBranch.Text = _employee.BranchName;
-            ComboBoxSupervisor.Text = _employee.SupervisorName;
+            if (_employee.SupervisorName == String.Empty)
+                // If the employee has no supervisor, select the null supervisor entry in
+                // the combo box.
+                ComboBoxSupervisor.SelectedItem = _nullSupervisor;
+            else
+                ComboBoxSupervisor.Text = _employee.SupervisorName;
             LabelCreatedDate.Content = LabelCreatedDate.Content + _employee.CreatedDate;
             LabelUpdatedDate.Content = LabelUpdatedDate.Content + _employee.UpdatedDate;
         }
@@ -189,10 +204,15 @@ namespace IOTApp
                 string salary = TextBoxSalary.Text.Trim();
 
                 string supervisorId;
-                if (ComboBoxSupervisor.SelectedItem != null)
-                    supervisorId = ((Employee)ComboBoxSupervisor.SelectedItem).Id.ToString();
-                else
+                if ((ComboBoxSupervisor.SelectedItem == null) ||
+                    (ComboBoxSupervisor.SelectedItem == _nullSupervisor))
+                {
                     supervisorId = "null";
+                }
+                else
+                {
+                    supervisorId = ((Employee)ComboBoxSupervisor.SelectedItem).Id.ToString();
+                }
 
                 string branchId;
                 if (ComboBoxBranch.SelectedItem != null)
