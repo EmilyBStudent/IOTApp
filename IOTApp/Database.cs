@@ -63,8 +63,9 @@ namespace IOTApp
         public List<Employee> QueryEmployees(string whereClause = "")
         {
             string sql = "SELECT e.id, e.given_name, e.family_name, e.date_of_birth, " +
-                "e.gender_identity, e.gross_salary, b.branch_name, CONCAT(s.given_name," +
-                " ' ', s.family_name) AS supervisor_name FROM employees AS e " +
+                "e.gender_identity, e.gross_salary, e.branch_id, b.branch_name, " +
+                "e.supervisor_id, CONCAT(s.given_name, ' ', s.family_name) AS supervisor_name, " +
+                "e.created_at, e.updated_at FROM employees AS e " +
                 "LEFT JOIN branches AS b ON e.branch_id = b.id " +
                 "LEFT JOIN employees AS s ON e.supervisor_id = s.id " +
                 whereClause + " " +
@@ -91,16 +92,40 @@ namespace IOTApp
                     dateStrs = rdr["date_of_birth"].ToString().Split(" ");
                     DateOnly dob = DateOnly.Parse(dateStrs[0]);
 
-                    // Make sure the branch and supervisor are not null.
+                    // Make sure the branch, supervisor, and created/updated dates are
+                    // not null.
+                    string branchIdStr = String.Empty;
+                    int? branchId = null;
+                    if (rdr["branch_id"] != null)
+                    {
+                        branchIdStr = rdr["branch_id"].ToString();
+                        int.TryParse(branchIdStr, out int branchIdInt);
+                        branchId = (int?)branchIdInt;
+                    }
                     string branch = String.Empty;
                     if (rdr["branch_name"] != null)
                         branch = rdr["branch_name"].ToString();
+                    string superIdStr = String.Empty;
+                    int? supervisorId = null;
+                    if (rdr["supervisor_id"] != null)
+                    {
+                        branchIdStr = rdr["supervisor_id"].ToString();
+                        int.TryParse(superIdStr, out int superIdInt);
+                        supervisorId = (int?)superIdInt;
+                    }
                     string supervisor = String.Empty;
                     if (rdr["supervisor_name"] != null)
                         supervisor = rdr["supervisor_name"].ToString();
 
+                    string created = String.Empty;
+                    if (rdr["created_at"] != null)
+                        created = rdr["created_at"].ToString();
+                    string updated = String.Empty;
+                    if (rdr["updated_at"] != null)
+                        updated = rdr["updated_at"].ToString();
+
                     Employee emp = new(id, givenName, familyName, dob, gender, salary,
-                        supervisor, branch);
+                        supervisorId, supervisor, branchId, branch, created, updated);
                     employees.Add(emp);
                 }
                 return employees;
@@ -123,7 +148,7 @@ namespace IOTApp
         /// query.</param>
         /// <returns></returns>
         public List<Branch> QueryBranches(string whereClause = "")
-        {
+            {
             string sql = $"SELECT id, branch_name FROM branches {whereClause};";
             List<Branch> branches = new();
             try

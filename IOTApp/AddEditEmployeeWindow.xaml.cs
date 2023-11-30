@@ -22,6 +22,9 @@ namespace IOTApp
     {
         private Database _db;
         private WindowMode _windowMode;
+        private Employee? _employee;
+        private List<Employee> _supervisors;
+        private Employee _nullSupervisor;
 
         /// <summary>
         /// Initialise the window in Add Mode.
@@ -37,6 +40,32 @@ namespace IOTApp
         }
 
         /// <summary>
+        /// Initialise the window in Edit Mode, in order to edit the given employee.
+        /// </summary>
+        /// <param name="db">The database connection to use.</param>
+        /// <param name="employee">The employee to edit.</param>
+        public AddEditEmployeeWindow(Database db, Employee employee)
+        {
+            InitializeComponent();
+            _db = db;
+            _windowMode = WindowMode.EditMode;
+            _employee = employee;
+            Title = "Edit Employee";
+            InitialiseAllModes();
+
+            // An employee cannot be their own supervisor.
+            foreach (Employee super in _supervisors)
+            {
+                if (super.Id == _employee.Id)
+                {
+                    _supervisors.Remove(super);
+                    break;
+                }
+            }
+            FillEmployeeData();
+        }
+
+        /// <summary>
         /// Window initialisation tasks that are common to both Add Mode and Edit Mode.
         /// </summary>
         private void InitialiseAllModes()
@@ -45,9 +74,41 @@ namespace IOTApp
             List<Branch> branches = _db.QueryBranches();
             ComboBoxBranch.ItemsSource = branches;
 
-            // Fill the supervisor combo box with a list of employees.
+            // Fill the supervisor combo box with a list of employees, including a null
+            // supervisor for employees who have no supervisor.
             List<Employee> supervisors = _db.QueryEmployees();
-            ComboBoxSupervisor.ItemsSource = supervisors;
+            Employee nullSuper = new()
+            {
+                Id = -1,
+                GivenName = "(no supervisor)",
+            };
+            _nullSupervisor = nullSuper;
+            supervisors.Insert(0, nullSuper);
+            _supervisors = supervisors;
+            ComboBoxSupervisor.ItemsSource = _supervisors;
+            ComboBoxSupervisor.SelectedItem = nullSuper;
+        }
+
+        /// <summary>
+        /// If in edit mode, initialise the window fields with the details of the
+        /// employee to edit.
+        /// </summary>
+        private void FillEmployeeData()
+        {
+            TextBoxGivenName.Text = _employee.GivenName;
+            TextBoxFamilyName.Text = _employee.FamilyName;
+            DatePickerDateOfBirth.Text = _employee.DateOfBirth.ToString();
+            ComboBoxGender.Text = _employee.GenderIdentity;
+            TextBoxSalary.Text = _employee.GrossSalary.ToString();
+            ComboBoxBranch.Text = _employee.BranchName;
+            if (_employee.SupervisorName == String.Empty)
+                // If the employee has no supervisor, select the null supervisor entry in
+                // the combo box.
+                ComboBoxSupervisor.SelectedItem = _nullSupervisor;
+            else
+                ComboBoxSupervisor.Text = _employee.SupervisorName;
+            LabelCreatedDate.Content = LabelCreatedDate.Content + _employee.CreatedDate;
+            LabelUpdatedDate.Content = LabelUpdatedDate.Content + _employee.UpdatedDate;
         }
 
         /// <summary>
@@ -143,10 +204,15 @@ namespace IOTApp
                 string salary = TextBoxSalary.Text.Trim();
 
                 string supervisorId;
-                if (ComboBoxSupervisor.SelectedItem != null)
-                    supervisorId = ((Employee)ComboBoxSupervisor.SelectedItem).Id.ToString();
-                else
+                if ((ComboBoxSupervisor.SelectedItem == null) ||
+                    (ComboBoxSupervisor.SelectedItem == _nullSupervisor))
+                {
                     supervisorId = "null";
+                }
+                else
+                {
+                    supervisorId = ((Employee)ComboBoxSupervisor.SelectedItem).Id.ToString();
+                }
 
                 string branchId;
                 if (ComboBoxBranch.SelectedItem != null)
@@ -154,15 +220,31 @@ namespace IOTApp
                 else
                     branchId = "null";
 
-                string sql = "INSERT INTO employees (given_name, family_name, " +
-                    "date_of_birth, gender_identity, gross_salary, " +
-                    "supervisor_id, branch_id, created_at) VALUES (" +
-                    $"'{givenName}', '{familyName}', '{dobIsoFormat}', '{gender}', " +
-                    $"{salary}, {supervisorId}, {branchId}, NOW());";
-                _db.ExecuteNonQuery(sql);
+                string sql = String.Empty;
+                if (_windowMode == WindowMode.AddMode)
+                {
+                    sql = "INSERT INTO employees (given_name, family_name, " +
+                        "date_of_birth, gender_identity, gross_salary, " +
+                        "supervisor_id, branch_id, created_at) VALUES (" +
+                        $"'{givenName}', '{familyName}', '{dobIsoFormat}', '{gender}', " +
+                        $"{salary}, {supervisorId}, {branchId}, NOW());";
+                    _db.ExecuteNonQuery(sql);
+                    MessageBox.Show("New employee added.", "Employee added",
+                        MessageBoxButton.OK);
+                }
+                else
+                {
+                    int id = _employee.Id;
+                    sql = $"UPDATE employees SET given_name = '{givenName}', " +
+                        $"family_name = '{familyName}', date_of_birth = '{dobIsoFormat}', " +
+                        $"gender_identity = '{gender}', gross_salary = {salary}, " +
+                        $"supervisor_id = {supervisorId}, branch_id = {branchId}, " +
+                        $"updated_at = NOW() WHERE id = {id};";
+                    _db.ExecuteNonQuery(sql);
+                    MessageBox.Show($"Employee {_employee} updated.", "Employee updated",
+                        MessageBoxButton.OK);
+                }
 
-                MessageBox.Show("New employee added.", "Employee added",
-                    MessageBoxButton.OK);
                 Close();
             }
         }

@@ -26,7 +26,7 @@
             <Button x:Name="ButtonAddEmployee" Content="Add" Height="30" Width="75"
                     Margin="0,0,0,0" Click="ButtonAddEmployee_Click"/>
             <Button x:Name="ButtonEditEmployee" Content="Edit" Height="30" Width="75"
-                    Margin="8,0,0,0"/>
+                    Margin="8,0,0,0" Click="ButtonEditEmployee_Click"/>
             <Button x:Name="ButtonViewSales" Content="View Sales" Height="30"
                     Width="75" Margin="8,0,0,0" Click="ButtonViewSales_Click"/>
             <Button x:Name="ButtonDeleteEmployee" Content="Delete" Height="30" Width="75"

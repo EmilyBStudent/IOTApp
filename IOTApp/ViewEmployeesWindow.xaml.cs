@@ -205,6 +205,24 @@ namespace IOTApp
         }
 
         /// <summary>
+        /// Get the selected employee, if any, and return them. If no employee is
+        /// selected, show the user an error message and return null.
+        /// </summary>
+        /// <returns>The selected employee, or null if no employee is
+        /// selected.</returns>
+        private Employee? GetSelectedEmployee()
+        {
+            // Get the selected employee, if any.
+            Employee? emp = (Employee)DataGridEmployeeList.SelectedItem;
+            if (emp == null)
+            {
+                MessageBox.Show("Please select an employee.", "No employee selected",
+                    MessageBoxButton.OK);
+            }
+            return emp;
+        }
+
+        /// <summary>
         /// Clicking the Close button closes the View Employees dialog.
         /// </summary>
         /// <param name="sender"></param>
@@ -357,13 +375,9 @@ namespace IOTApp
         private void ButtonDeleteEmployee_Click(object sender, RoutedEventArgs e)
         {
             // Get selected employee from the data grid, if any.
-            Employee? emp = (Employee)DataGridEmployeeList.SelectedItem;
+            Employee? emp = GetSelectedEmployee();
             if (emp == null)
-            {
-                MessageBox.Show("Please select an employee.", "No employee selected",
-                    MessageBoxButton.OK);
                 return;
-            }
 
             // Confirm the user is certain they want to delete the selected employee.
             string msg = "Deleting the employee will permanently remove them from the " +
@@ -406,18 +420,36 @@ namespace IOTApp
         private void ButtonViewSales_Click(object sender, RoutedEventArgs e)
         {
             // Get the selected employee, if any.
-            Employee? emp = (Employee)DataGridEmployeeList.SelectedItem;
+            Employee? emp = GetSelectedEmployee();
             if (emp == null)
-            {
-                MessageBox.Show("Please select an employee.", "No employee selected",
-                    MessageBoxButton.OK);
                 return;
-            }
 
             // Open the employee sales window with the selected employee.
             EmployeeSalesWindow win = new(_db, emp);
             win.Owner = this;
             win.ShowDialog();
+        }
+
+        /// <summary>
+        /// Clicking the "Edit" button opens the Add/Edit Employee window in Edit mode,
+        /// using the details of the employee passed in.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonEditEmployee_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the selected employee, if any.
+            Employee? emp = GetSelectedEmployee();
+            if (emp == null)
+                return;
+
+            // Open the Edit Employee window with the selected employee.
+            AddEditEmployeeWindow win = new(_db, emp);
+            win.Owner = this;
+            win.ShowDialog();
+
+            // Refresh the employee list after the Edit Employee dialog is closed.
+            FillEmployeesDataGrid();
         }
     }
 }
