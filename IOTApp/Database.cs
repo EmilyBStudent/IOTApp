@@ -39,7 +39,7 @@ namespace IOTApp
         /// <summary>
         /// Open a connection to the database.
         /// </summary>
-        public void Open()
+        private void Open()
         {
             _conn.Open();
         }
@@ -47,7 +47,7 @@ namespace IOTApp
         /// <summary>
         /// Close the connection to the database.
         /// </summary>
-        public void Close()
+        private void Close()
         {
             _conn.Close();
         }
