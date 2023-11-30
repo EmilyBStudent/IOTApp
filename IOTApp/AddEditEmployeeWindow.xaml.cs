@@ -266,8 +266,9 @@ namespace IOTApp
                         $"supervisor_id = {supervisorId}, branch_id = {branchId}, " +
                         $"updated_at = NOW() WHERE id = {id};";
                     _db.ExecuteNonQuery(sql);
-                    MessageBox.Show($"Employee {_employee} updated.", "Employee updated",
-                        MessageBoxButton.OK);
+                    string employeeName = $"{givenName} {familyName}";
+                    MessageBox.Show($"Employee {employeeName} updated.",
+                        "Employee updated", MessageBoxButton.OK);
                 }
 
                 Close();
