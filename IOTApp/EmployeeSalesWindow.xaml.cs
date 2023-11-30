@@ -51,7 +51,7 @@ namespace IOTApp
                 totalSales = 0;
             }
             string formattedTotalSales = $"${totalSales.ToString("N0")}";
-            LabelTotalSales.Content = LabelTotalSales.Content + formattedTotalSales;
+            LabelTotalSales.Content = formattedTotalSales;
 
             // Get and display the employee's sales breakdown.
             whereClause = $"WHERE ww.employee_id = {id} ";
