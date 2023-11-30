@@ -141,6 +141,100 @@ namespace IOTApp
         }
 
         /// <summary>
+        /// Query the Working With table to get a list of sales records, itemised by
+        /// client and employee.
+        /// </summary>
+        /// <param name="whereClause">The WHERE clause to include in the SQL query.
+        /// Table names should be abbreviated as follows: working_with = ww; 
+        /// employees = e; clients = c.</param>
+        /// <returns>A list of sales records itemised by client and employee.</returns>
+        public List<SalesRecord> QuerySalesByClient(string whereClause = "")
+        {
+            string sql = "SELECT ww.employee_id, CONCAT(e.given_name, ' ', e.family_name) AS employee_name, " +
+                "ww.client_id, c.client_name, ww.total_sales FROM working_with AS ww " +
+                "LEFT JOIN employees AS e ON ww.employee_id = e.id " +
+                "LEFT JOIN clients AS c ON ww.client_id = c.id " +
+                whereClause + " " +
+                "ORDER BY c.client_name;";
+            List<SalesRecord> sales = new();
+            try
+            {
+                Open();
+                MySqlCommand cmd = new(sql, _conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    string employeeIDStr = rdr["employee_id"].ToString();
+                    int.TryParse(employeeIDStr, out int employeeID);
+                    string employeeName = rdr["employee_name"].ToString();
+                    string clientIDStr = rdr["client_id"].ToString();
+                    int.TryParse(clientIDStr, out int clientID);
+                    string clientName = rdr["client_name"].ToString();
+                    string salesStr = rdr["total_sales"].ToString();
+                    int.TryParse(salesStr, out int totalSales);
+
+                    SalesRecord salesRec = new(clientID, clientName, employeeID,
+                        employeeName, totalSales);
+                    sales.Add(salesRec);
+                }
+                return sales;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return sales;
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of total sales across all clients, grouped by employee.
+        /// </summary>
+        /// <param name="whereClause">The WHERE clause to include in the SQL query - 
+        /// optional. Table names should be abbreviated as follows: working_with = ww; 
+        /// employees = e.</param>
+        /// <returns>A list of sales records itemised by employee.</returns>
+        public List<SalesRecord> QueryEmployeeTotalSales(string whereClause = "")
+        {
+            string sql = "SELECT e.id AS employee_id, CONCAT(e.given_name, ' ', e.family_name) AS employee_name, " +
+                "SUM(ww.total_sales) AS total_sales FROM working_with AS ww " +
+                "LEFT JOIN employees AS e ON ww.employee_id = e.id " +
+                whereClause + " " +
+                "GROUP BY ww.employee_id;";
+            List<SalesRecord> sales = new();
+            try
+            {
+                Open();
+                MySqlCommand cmd = new(sql, _conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    string employeeIdStr = rdr["employee_id"].ToString();
+                    int.TryParse(employeeIdStr, out int employeeId);
+                    string employeeName = rdr["employee_name"].ToString();
+                    string salesStr = rdr["total_sales"].ToString();
+                    int.TryParse(salesStr, out int totalSales);
+
+                    SalesRecord salesRec = new(employeeId, employeeName, totalSales);
+                    sales.Add(salesRec);
+                }
+                return sales;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return sales;
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+        /// <summary>
         /// Execute the given SQL as a non-query (i.e. no results need to be returned).
         /// </summary>
         /// <param name="sql">The SQL to execute.</param>
