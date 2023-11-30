@@ -354,5 +354,55 @@ namespace IOTApp
             // After the dialog closes, refresh the employee list.
             FillEmployeesDataGrid();
         }
+
+        /// <summary>
+        /// Clicking the Delete Employee button removes the employee from the employees
+        /// table. It also removes any references to that employee from the rest of the
+        /// database.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonDeleteEmployee_Click(object sender, RoutedEventArgs e)
+        {
+            // Get selected employee from the data grid, if any.
+            Employee? emp = (Employee)DataGridEmployeeList.SelectedItem;
+            if (emp == null)
+            {
+                MessageBox.Show("Please select an employee.", "No employee selected",
+                    MessageBoxButton.OK);
+                return;
+            }
+
+            // Confirm the user is certain they want to delete the selected employee.
+            string msg = "Deleting the employee will permanently remove them from the " +
+                "database. This cannot be undone. Are you sure you want to delete " +
+                $"{emp}?";
+            string caption = "Confirm delete employee";
+            MessageBoxResult result = MessageBox.Show(msg, caption, 
+                MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.OK)
+            {
+                int id = emp.Id;
+                // Delete the employee from the employees table, and remove references to
+                // them as employee supervisor, branch manager, and working with clients.
+                string[] sqlQueries = {
+                    $"DELETE FROM employees WHERE id = {id};",
+                    $"UPDATE employees SET supervisor_id = null, updated_at = NOW() " +
+                        $"WHERE supervisor_id = {id};",
+                    $"DELETE FROM working_with WHERE employee_id = {id};",
+                    // Branches table is set up to automatically set updated_at field
+                    // to current timestamp when a record is updated.
+                    $"UPDATE branches SET manager_id = null, manager_started_at = null " +
+                        $"WHERE manager_id = {id};",
+                };
+                foreach (string sql in sqlQueries)
+                {
+                    _db.ExecuteNonQuery(sql);
+                }
+                MessageBox.Show($"Employee {emp} deleted.", "Employee deleted",
+                    MessageBoxButton.OK);
+                FillEmployeesDataGrid();
+            }
+        }
     }
 }
