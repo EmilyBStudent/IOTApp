@@ -163,9 +163,9 @@ namespace IOTApp
 
                 string sql = "INSERT INTO employees (given_name, family_name, " +
                     "date_of_birth, gender_identity, gross_salary, " +
-                    "supervisor_id, branch_id) VALUES (" +
+                    "supervisor_id, branch_id, created_at) VALUES (" +
                     $"'{givenName}', '{familyName}', '{dobIsoFormat}', '{gender}', " +
-                    $"{salary}, {supervisorId}, {branchId});";
+                    $"{salary}, {supervisorId}, {branchId}, NOW());";
                 _db.ExecuteNonQuery(sql);
 
                 MessageBox.Show("New employee added.", "Employee added",
