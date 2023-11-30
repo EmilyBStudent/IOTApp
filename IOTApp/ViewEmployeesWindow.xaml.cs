@@ -404,5 +404,28 @@ namespace IOTApp
                 FillEmployeesDataGrid();
             }
         }
+
+        /// <summary>
+        /// Clicking the "View Sales" button brings up a simple sales report for the
+        /// selected employee.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonViewSales_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the selected employee, if any.
+            Employee? emp = (Employee)DataGridEmployeeList.SelectedItem;
+            if (emp == null)
+            {
+                MessageBox.Show("Please select an employee.", "No employee selected",
+                    MessageBoxButton.OK);
+                return;
+            }
+
+            // Open the employee sales window with the selected employee.
+            EmployeeSalesWindow win = new(_db, emp);
+            win.Owner = this;
+            win.ShowDialog();
+        }
     }
 }
