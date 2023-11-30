@@ -22,6 +22,7 @@ namespace IOTApp
     {
         private Database _db;
         private WindowMode _windowMode;
+        private Employee? _employee;
 
         /// <summary>
         /// Initialise the window in Add Mode.
@@ -37,6 +38,22 @@ namespace IOTApp
         }
 
         /// <summary>
+        /// Initialise the window in Edit Mode, in order to edit the given employee.
+        /// </summary>
+        /// <param name="db">The database connection to use.</param>
+        /// <param name="employee">The employee to edit.</param>
+        public AddEditEmployeeWindow(Database db, Employee employee)
+        {
+            InitializeComponent();
+            _db = db;
+            _windowMode = WindowMode.EditMode;
+            _employee = employee;
+            Title = "Edit Employee";
+            InitialiseAllModes();
+            FillEmployeeData();
+        }
+
+        /// <summary>
         /// Window initialisation tasks that are common to both Add Mode and Edit Mode.
         /// </summary>
         private void InitialiseAllModes()
@@ -48,6 +65,23 @@ namespace IOTApp
             // Fill the supervisor combo box with a list of employees.
             List<Employee> supervisors = _db.QueryEmployees();
             ComboBoxSupervisor.ItemsSource = supervisors;
+        }
+
+        /// <summary>
+        /// If in edit mode, initialise the window fields with the details of the
+        /// employee to edit.
+        /// </summary>
+        private void FillEmployeeData()
+        {
+            TextBoxGivenName.Text = _employee.GivenName;
+            TextBoxFamilyName.Text = _employee.FamilyName;
+            DatePickerDateOfBirth.Text = _employee.DateOfBirth.ToString();
+            ComboBoxGender.Text = _employee.GenderIdentity;
+            TextBoxSalary.Text = _employee.GrossSalary.ToString();
+            ComboBoxBranch.Text = _employee.BranchName;
+            ComboBoxSupervisor.Text = _employee.SupervisorName;
+            LabelCreatedDate.Content = LabelCreatedDate.Content + _employee.CreatedDate;
+            LabelUpdatedDate.Content = LabelUpdatedDate.Content + _employee.UpdatedDate;
         }
 
         /// <summary>

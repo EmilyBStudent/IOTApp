@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IOTApp"
         mc:Ignorable="d"
-        Title="Edit Employee" Height="250" Width="450" ShowInTaskbar="False"
+        Title="Edit Employee" Height="275" Width="435" ShowInTaskbar="False"
         ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -19,16 +19,16 @@
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
             <RowDefinition Height="32"/>
-            <RowDefinition Height="32"/>
+            <RowDefinition Height="55"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="8"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
             <Label Content="Given Name:" VerticalAlignment="Center"/>
-            <TextBox x:Name="TextBoxGivenName" Width="100" VerticalAlignment="Center"/>
+            <TextBox x:Name="TextBoxGivenName" Width="120" VerticalAlignment="Center"/>
             <Label Content="Family Name:" VerticalAlignment="Center"/>
-            <TextBox x:Name="TextBoxFamilyName" Width="100" VerticalAlignment="Center"/>
+            <TextBox x:Name="TextBoxFamilyName" Width="120" VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
             <Label Content="Date of Birth:" VerticalAlignment="Center"/>
@@ -43,26 +43,22 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
             <Label Content="Gross Salary: $" VerticalAlignment="Center"/>
-            <TextBox x:Name="TextBoxSalary" Width="60" VerticalAlignment="Center"/>
+            <TextBox x:Name="TextBoxSalary" Width="75" VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1">
             <Label Content="Branch:" VerticalAlignment="Center"/>
             <ComboBox x:Name="ComboBoxBranch" VerticalAlignment="Center"
-                      Width="100"/>
+                      Width="120"/>
             <Label Content="Supervisor:" VerticalAlignment="Center"/>
-            <ComboBox x:Name="ComboBoxSupervisor" Width="120"
+            <ComboBox x:Name="ComboBoxSupervisor" Width="150"
                       VerticalAlignment="Center"/>
         </StackPanel>
-        <Grid Grid.Row="5" Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="5" Grid.Column="1">
             <Label x:Name="LabelCreatedDate" Content="Employee created: "
                    Grid.Column="0" VerticalAlignment="Center"/>
             <Label x:Name="LabelUpdatedDate" Content="Last updated: "
                    Grid.Column="1" VerticalAlignment="Center"/>
-        </Grid>
+        </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="6"
                     Grid.Column="1">
             <Button x:Name="ButtonSave" Content="Save" Height="30" Width="75"
