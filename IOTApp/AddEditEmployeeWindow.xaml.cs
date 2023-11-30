@@ -253,9 +253,12 @@ namespace IOTApp
                         "supervisor_id, branch_id, created_at) VALUES (" +
                         $"'{givenName}', '{familyName}', '{dobIsoFormat}', '{gender}', " +
                         $"{salary}, {supervisorId}, {branchId}, NOW());";
-                    _db.ExecuteNonQuery(sql);
-                    MessageBox.Show("New employee added.", "Employee added",
-                        MessageBoxButton.OK);
+                    bool success = _db.ExecuteNonQuery(sql);
+                    if (success)
+                    {
+                        MessageBox.Show("New employee added.", "Employee added",
+                            MessageBoxButton.OK);
+                    }
                 }
                 else
                 {
@@ -265,10 +268,13 @@ namespace IOTApp
                         $"gender_identity = '{gender}', gross_salary = {salary}, " +
                         $"supervisor_id = {supervisorId}, branch_id = {branchId}, " +
                         $"updated_at = NOW() WHERE id = {id};";
-                    _db.ExecuteNonQuery(sql);
-                    string employeeName = $"{givenName} {familyName}";
-                    MessageBox.Show($"Employee {employeeName} updated.",
-                        "Employee updated", MessageBoxButton.OK);
+                    bool success = _db.ExecuteNonQuery(sql);
+                    if (success)
+                    {
+                        string employeeName = $"{givenName} {familyName}";
+                        MessageBox.Show($"Employee {employeeName} updated.",
+                            "Employee updated", MessageBoxButton.OK);
+                    }
                 }
 
                 Close();

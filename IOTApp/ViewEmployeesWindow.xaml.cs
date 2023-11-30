@@ -386,6 +386,7 @@ namespace IOTApp
             string caption = "Confirm delete employee";
             MessageBoxResult result = MessageBox.Show(msg, caption, 
                 MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            bool allSuccess = true;
             if (result == MessageBoxResult.OK)
             {
                 int id = emp.Id;
@@ -403,10 +404,15 @@ namespace IOTApp
                 };
                 foreach (string sql in sqlQueries)
                 {
-                    _db.ExecuteNonQuery(sql);
+                    bool success = _db.ExecuteNonQuery(sql);
+                    if (!success)
+                        allSuccess = false;
                 }
-                MessageBox.Show($"Employee {emp} deleted.", "Employee deleted",
-                    MessageBoxButton.OK);
+                if (allSuccess)
+                {
+                    MessageBox.Show($"Employee {emp} deleted.", "Employee deleted",
+                        MessageBoxButton.OK);
+                }
                 FillEmployeesDataGrid();
             }
         }
