@@ -25,16 +25,20 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
-            <Label Content="Given Name:" VerticalAlignment="Center"/>
+            <Label Content="Given _Name:" VerticalAlignment="Center"
+                   Target="{Binding ElementName=TextBoxGivenName}"/>
             <TextBox x:Name="TextBoxGivenName" Width="120" VerticalAlignment="Center"/>
-            <Label Content="Family Name:" VerticalAlignment="Center"/>
+            <Label Content="_Family Name:" VerticalAlignment="Center"
+                   Target="{Binding ElementName=TextBoxFamilyName}"/>
             <TextBox x:Name="TextBoxFamilyName" Width="120" VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
-            <Label Content="Date of Birth:" VerticalAlignment="Center"/>
+            <Label Content="_Date of Birth:" VerticalAlignment="Center"
+                   Target="{Binding ElementName=DatePickerDateOfBirth}"/>
             <DatePicker x:Name="DatePickerDateOfBirth" Width="100"
                         VerticalAlignment="Center"/>
-            <Label Content="Gender Identity:" VerticalAlignment="Center"/>
+            <Label Content="_Gender Identity:" VerticalAlignment="Center"
+                   Target="{Binding ElementName=ComboBoxGender}"/>
             <ComboBox x:Name="ComboBoxGender" VerticalAlignment="Center" Width="40">
                 <ComboBoxItem>M</ComboBoxItem>
                 <ComboBoxItem>F</ComboBoxItem>
@@ -42,14 +46,17 @@
             </ComboBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
-            <Label Content="Gross Salary: $" VerticalAlignment="Center"/>
+            <Label Content="Gross S_alary: $" VerticalAlignment="Center"
+                   Target="{Binding ElementName=TextBoxSalary}"/>
             <TextBox x:Name="TextBoxSalary" Width="75" VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1">
-            <Label Content="Branch:" VerticalAlignment="Center"/>
+            <Label Content="_Branch:" VerticalAlignment="Center"
+                   Target="{Binding ElementName=ComboBoxBranch}"/>
             <ComboBox x:Name="ComboBoxBranch" VerticalAlignment="Center"
                       Width="120"/>
-            <Label Content="Supervisor:" VerticalAlignment="Center"/>
+            <Label Content="S_upervisor:" VerticalAlignment="Center"
+                   Target="{Binding ElementName=ComboBoxSupervisor}"/>
             <ComboBox x:Name="ComboBoxSupervisor" Width="150"
                       VerticalAlignment="Center"/>
         </StackPanel>
@@ -61,9 +68,9 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="6"
                     Grid.Column="1">
-            <Button x:Name="ButtonSave" Content="Save" Height="30" Width="75"
+            <Button x:Name="ButtonSave" Content="_Save" Height="30" Width="75"
                     Margin="8,0,0,0" VerticalAlignment="Center" Click="ButtonSave_Click"/>
-            <Button x:Name="ButtonCancel" Content="Cancel" IsCancel="True" Height="30"
+            <Button x:Name="ButtonCancel" Content="_Cancel" IsCancel="True" Height="30"
                     Width="75" Margin="8,0,0,0" VerticalAlignment="Center"/>
         </StackPanel>
     </Grid>
