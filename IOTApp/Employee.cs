@@ -38,10 +38,18 @@ namespace IOTApp
         /// </summary>
         public int GrossSalary { get; set; }
         /// <summary>
+        /// The unique ID of the employee's supervisor. May be null.
+        /// </summary>
+        public int? SupervisorId { get; set; }
+        /// <summary>
         /// The full name of the employee's supervisor. This can be null in the database;
         /// if so, it will be initialised as an empty string.
         /// </summary>
         public string SupervisorName { get; set; }
+        /// <summary>
+        /// The unique ID of the branch the employee works at. May be null.
+        /// </summary>
+        public int? BranchId { get; set; }
         /// <summary>
         /// The name of the branch the employee works at. If null, it will be initialised
         /// as an empty string.
@@ -58,12 +66,17 @@ namespace IOTApp
         /// <param name="gender">The employee's gender identity, represented by one of
         /// the chars M, F or O (for Other).</param>
         /// <param name="salary">The employee's annual salary before tax.</param>
-        /// <param name="supervisor">The employee's supervisor, if known. Can be null or
-        /// omitted.</param>
-        /// <param name="branch">The employee's branch, if known. Can be null or
-        /// omitted.</param>
+        /// <param name="supervisorId">The unique ID of the employee's supervisor, if
+        /// known.</param>
+        /// <param name="supervisor">The name of the employee's supervisor, if known.
+        /// Can be null or omitted.</param>
+        /// <param name="branchId">The unique ID of the employee's branch, if
+        /// known.</param>
+        /// <param name="branch">The name of the employee's branch, if known. Can be
+        /// null or omitted.</param>
         public Employee(int id, string givenName, string familyName, DateOnly dob,
-            string gender, int salary, string? supervisor="", string? branch="")
+            string gender, int salary, int? supervisorId = null, string? supervisor="",
+            int? branchId = null, string? branch="")
         {
             Id = id;
             GivenName = givenName;
@@ -71,6 +84,8 @@ namespace IOTApp
             DateOfBirth = dob;
             GenderIdentity = gender;
             GrossSalary = salary;
+            SupervisorId = supervisorId;
+            BranchId = branchId;
 
             // If the supervisor name or the branch name is null, initialise the relevant
             // property as an empty string instead.
