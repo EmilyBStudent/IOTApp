@@ -40,7 +40,7 @@
                                     Binding="{Binding TotalSales}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="Close" Content="Close" IsCancel="True" Width="75" Height="30"
+        <Button x:Name="Close" Content="_Close" IsCancel="True" Width="75" Height="30"
                 Grid.Row="3" Grid.Column="1"
                 VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>
