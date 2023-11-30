@@ -190,7 +190,49 @@ namespace IOTApp
             }
         }
 
+        /// <summary>
+        /// Gets a list of total sales across all clients, grouped by employee.
+        /// </summary>
+        /// <param name="whereClause">The WHERE clause to include in the SQL query - 
+        /// optional. Table names should be abbreviated as follows: working_with = ww; 
+        /// employees = e.</param>
+        /// <returns>A list of sales records itemised by employee.</returns>
+        public List<SalesRecord> QueryEmployeeTotalSales(string whereClause = "")
+        {
+            string sql = "SELECT e.id AS employee_id, CONCAT(e.given_name, ' ', e.family_name) AS employee_name, " +
+                "SUM(ww.total_sales) AS total_sales FROM working_with AS ww " +
+                "LEFT JOIN employees AS e ON ww.employee_id = e.id " +
+                whereClause + " " +
+                "GROUP BY ww.employee_id;";
+            List<SalesRecord> sales = new();
+            try
+            {
+                Open();
+                MySqlCommand cmd = new(sql, _conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    string employeeIdStr = rdr["employee_id"].ToString();
+                    int.TryParse(employeeIdStr, out int employeeId);
+                    string employeeName = rdr["employee_name"].ToString();
+                    string salesStr = rdr["total_sales"].ToString();
+                    int.TryParse(salesStr, out int totalSales);
 
+                    SalesRecord salesRec = new(employeeId, employeeName, totalSales);
+                    sales.Add(salesRec);
+                }
+                return sales;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return sales;
+            }
+            finally
+            {
+                Close();
+            }
+        }
 
         /// <summary>
         /// Execute the given SQL as a non-query (i.e. no results need to be returned).

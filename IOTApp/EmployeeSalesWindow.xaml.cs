@@ -38,8 +38,23 @@ namespace IOTApp
             int id = _employee.Id;
             LabelEmployeeName.Content = $"{_employee}";
 
-            // Get the employee's sales breakdown.
+            // Get and display the employee's total sales.
             string whereClause = $"WHERE ww.employee_id = {id} ";
+            List<SalesRecord> salesSum = _db.QueryEmployeeTotalSales(whereClause);
+            int totalSales;
+            if (salesSum.Count > 0)
+            {
+                totalSales = salesSum[0].TotalSales;
+            }
+            else
+            {
+                totalSales = 0;
+            }
+            string formattedTotalSales = $"${totalSales.ToString("N0")}";
+            LabelTotalSales.Content = LabelTotalSales.Content + formattedTotalSales;
+
+            // Get and display the employee's sales breakdown.
+            whereClause = $"WHERE ww.employee_id = {id} ";
             List<SalesRecord> salesBreakdown = _db.QuerySalesByClient(whereClause);
             DataGridSalesBreakdown.ItemsSource = salesBreakdown;
         }

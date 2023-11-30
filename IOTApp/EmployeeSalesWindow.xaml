@@ -24,7 +24,7 @@
         <StackPanel Grid.Row="1" Grid.Column="1">
             <Label x:Name="LabelEmployeeName" Content="Employee Name" FontSize="20"
                    FontWeight="Bold"/>
-            <Label x:Name="LabelTotalSales" Content="Total Sales:" FontSize="20"/>
+            <Label x:Name="LabelTotalSales" Content="Total Sales: " FontSize="20"/>
             <Label Content="Breakdown:"/>
         </StackPanel>
         <DataGrid x:Name="DataGridSalesBreakdown" Grid.Column="1" Grid.Row="2"
