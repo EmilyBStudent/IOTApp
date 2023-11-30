@@ -111,7 +111,7 @@
                 <DataGridTextColumn Header="Given Name" Binding="{Binding GivenName}"/>
                 <DataGridTextColumn Header="Family Name" Binding="{Binding FamilyName}"/>
                 <DataGridTextColumn Header="Date of Birth"
-                                    Binding="{Binding DateOfBirth}"/>
+                                    Binding="{Binding DateOfBirth, StringFormat={}{0:dd/MM/yyyy}}"/>
                 <DataGridTextColumn Header="Gender" Binding="{Binding GenderIdentity}"/>
                 <DataGridTextColumn Header="Gross Salary"
                                     Binding="{Binding GrossSalary}"/>
