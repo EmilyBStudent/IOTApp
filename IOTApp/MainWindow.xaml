@@ -59,7 +59,8 @@
             <Button x:Name="ButtonClients" Content="Clients" IsEnabled="False"
                     FontSize="20" Width="175" Height="40" Margin="8,24,8,0"/>
             <Button x:Name="ButtonEmployees" Content="Employees" FontSize="20"
-                    Width="175" Height="40" Margin="8,8,8,0" Click="ButtonEmployees_Click"/>
+                    Width="175" Height="40" Margin="8,8,8,0" Click="ButtonEmployees_Click"
+                    Background="#FF2A6099" Foreground="White"/>
             <Button x:Name="ButtonSuppliers" Content="Suppliers" IsEnabled="False"
                     FontSize="20" Width="175" Height="40" Margin="8,8,8,0"/>
             <Button x:Name="ButtonBranches" Content="Branches" IsEnabled="False"
