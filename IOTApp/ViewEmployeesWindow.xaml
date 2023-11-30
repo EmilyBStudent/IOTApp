@@ -24,7 +24,7 @@
 
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
             <Button x:Name="ButtonAddEmployee" Content="Add" Height="30" Width="75"
-                    Margin="0,0,0,0"/>
+                    Margin="0,0,0,0" Click="ButtonAddEmployee_Click"/>
             <Button x:Name="ButtonEditEmployee" Content="Edit" Height="30" Width="75"
                     Margin="8,0,0,0"/>
             <Button x:Name="ButtonViewSales" Content="View Sales" Height="30"

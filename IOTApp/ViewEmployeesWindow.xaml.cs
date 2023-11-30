@@ -339,5 +339,20 @@ namespace IOTApp
                 ValidateSalaryFields(TextBoxMaxSalary, true);
             }
         }
+
+        /// <summary>
+        /// Clicking the "Add" button opens the Add/Edit Employee window in Add mode.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonAddEmployee_Click(object sender, RoutedEventArgs e)
+        {
+            AddEditEmployeeWindow win = new(_db);
+            win.Owner = this;
+            win.ShowDialog();
+
+            // After the dialog closes, refresh the employee list.
+            FillEmployeesDataGrid();
+        }
     }
 }

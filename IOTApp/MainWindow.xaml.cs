@@ -72,5 +72,17 @@ namespace IOTApp
         {
             ViewEmployees();
         }
+
+        /// <summary>
+        /// Clicking the Employees -> Add menu item opens the Add Employee dialog.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuItemAddEmployee_Click(object sender, RoutedEventArgs e)
+        {
+            AddEditEmployeeWindow win = new(_db);
+            win.Owner = this;
+            win.ShowDialog();
+        }
     }
 }
