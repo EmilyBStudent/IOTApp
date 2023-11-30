@@ -47,13 +47,7 @@ namespace IOTApp
             ComboBoxBranch.ItemsSource = branches;
 
             // Fill the supervisor combo box with a list of employees.
-            sql = "SELECT e.id, e.given_name, e.family_name, e.date_of_birth, " +
-                "e.gender_identity, e.gross_salary, b.branch_name, CONCAT(s.given_name," +
-                " ' ', s.family_name) AS supervisor_name FROM employees AS e " +
-                "LEFT JOIN branches AS b ON e.branch_id = b.id " +
-                "LEFT JOIN employees AS s ON e.supervisor_id = s.id " +
-                "ORDER BY family_name, given_name;";
-            List<Employee> supervisors = _db.QueryEmployees(sql);
+            List<Employee> supervisors = _db.QueryEmployees();
             ComboBoxSupervisor.ItemsSource = supervisors;
         }
 
