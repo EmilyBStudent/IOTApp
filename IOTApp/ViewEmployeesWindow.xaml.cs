@@ -431,15 +431,15 @@ namespace IOTApp
         }
 
         /// <summary>
-        /// Clicking the "Edit" button opens the Add/Edit Employee window in Edit mode,
-        /// using the details of the employee passed in.
+        /// Open the Edit Employee to edit the given employee, or the currently selected
+        /// employee if no employee is passed in.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonEditEmployee_Click(object sender, RoutedEventArgs e)
+        /// <param name="emp">The employee to edit - optional.</param>
+        private void EditEmployee(Employee? emp = null)
         {
-            // Get the selected employee, if any.
-            Employee? emp = GetSelectedEmployee();
+            if (emp == null)
+                // Get the selected employee, if any.
+                emp = GetSelectedEmployee();
             if (emp == null)
                 return;
 
@@ -450,6 +450,28 @@ namespace IOTApp
 
             // Refresh the employee list after the Edit Employee dialog is closed.
             FillEmployeesDataGrid();
+        }
+
+        /// <summary>
+        /// Clicking the "Edit" button opens the Add/Edit Employee window in Edit mode,
+        /// using the details of the employee passed in.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonEditEmployee_Click(object sender, RoutedEventArgs e)
+        {
+            EditEmployee();
+        }
+
+        /// <summary>
+        /// Double-clicking an employee in the employee list data grid opens the Edit
+        /// Employee window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DataGridEmployeeList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            EditEmployee();
         }
     }
 }

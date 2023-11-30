@@ -106,7 +106,8 @@
 
         <DataGrid x:Name="DataGridEmployeeList" Grid.Row="3" Grid.Column="1"
                   Grid.ColumnSpan="2" IsReadOnly="True" SelectionMode="Single"
-                  ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,8,0,0">
+                  ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,8,0,0"
+                  MouseDoubleClick="DataGridEmployeeList_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Given Name" Binding="{Binding GivenName}"/>
                 <DataGridTextColumn Header="Family Name" Binding="{Binding FamilyName}"/>
@@ -114,7 +115,7 @@
                                     Binding="{Binding DateOfBirth, StringFormat={}{0:dd/MM/yyyy}}"/>
                 <DataGridTextColumn Header="Gender" Binding="{Binding GenderIdentity}"/>
                 <DataGridTextColumn Header="Gross Salary"
-                                    Binding="{Binding GrossSalary}"/>
+                                    Binding="{Binding GrossSalary, StringFormat={}{0:C0}}"/>
                 <DataGridTextColumn Header="Branch" Binding="{Binding BranchName}"/>
                 <DataGridTextColumn Header="Supervisor"
                                     Binding="{Binding SupervisorName}"/>
