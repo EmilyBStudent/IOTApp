@@ -42,8 +42,7 @@ namespace IOTApp
         /// </summary>
         private void FillBranchComboBox()
         {
-            string sql = "SELECT id, branch_name FROM branches;";
-            List<Branch> branches = _db.QueryBranches(sql);
+            List<Branch> branches = _db.QueryBranches();
             ComboBoxBranch.ItemsSource = branches;
         }
 
@@ -54,23 +53,19 @@ namespace IOTApp
         private void FillEmployeesDataGrid()
         {
             DataGridEmployeeList.DataContext = null;
-            string sql = BuildEmployeesSQLQuery();
-            List<Employee> employees = _db.QueryEmployees(sql);
+            string whereClause = BuildEmployeesWhereClause();
+            List<Employee> employees = _db.QueryEmployees(whereClause);
             DataGridEmployeeList.DataContext = employees;
         }
 
         /// <summary>
-        /// Build a SQL string to query the employees table for a list of employees,
-        /// dependent on the search/filter options in use.
+        /// Build a SQL WHERE clause to query the employees table, based on the
+        /// search/filter options in use.
         /// </summary>
-        /// <returns>The completed SQL query.</returns>
-        private string BuildEmployeesSQLQuery()
+        /// <returns>The completed SQL WHERE clause.</returns>
+        private string BuildEmployeesWhereClause()
         {
-            string sql = "SELECT e.id, e.given_name, e.family_name, e.date_of_birth, " +
-                "e.gender_identity, e.gross_salary, b.branch_name, CONCAT(s.given_name," +
-                " ' ', s.family_name) AS supervisor_name FROM employees AS e " +
-                "LEFT JOIN branches AS b ON e.branch_id = b.id " +
-                "LEFT JOIN employees AS s ON e.supervisor_id = s.id ";
+            string sql = String.Empty;
 
             // Parse and store search/filter settings.
             string searchName = TextBoxSearchName.Text.Trim();
@@ -131,9 +126,6 @@ namespace IOTApp
                     sql = sql + $"e.gross_salary < {maxSalary} ";
                 }
             }
-
-            // Sort employees by family and given name.
-            sql = sql + "ORDER BY e.family_name, e.given_name, e.id;";
             return sql;
         }
 

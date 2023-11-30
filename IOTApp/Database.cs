@@ -39,7 +39,7 @@ namespace IOTApp
         /// <summary>
         /// Open a connection to the database.
         /// </summary>
-        public void Open()
+        private void Open()
         {
             _conn.Open();
         }
@@ -47,20 +47,29 @@ namespace IOTApp
         /// <summary>
         /// Close the connection to the database.
         /// </summary>
-        public void Close()
+        private void Close()
         {
             _conn.Close();
         }
 
         /// <summary>
-        /// Queries the employees table of the database with the given SQL query string
-        /// and returns the results as a List of Employee objects.
+        /// Queries the employees table of the database, using the given WHERE clause in
+        /// the SQL query, and returns the results as a List of Employee objects.
         /// </summary>
-        /// <param name="sql">The SQL query to run. Must return a list of
-        /// employees from the employees table.</param>
+        /// <param name="whereClause">The WHERE clause to insert into the SQL
+        /// query. Table names must be abbreviated as follows: employees = e;
+        /// branches = b.</param>
         /// <returns>The query result as a List of Employee objects.</returns>
-        public List<Employee> QueryEmployees(string sql)
+        public List<Employee> QueryEmployees(string whereClause = "")
         {
+            string sql = "SELECT e.id, e.given_name, e.family_name, e.date_of_birth, " +
+                "e.gender_identity, e.gross_salary, b.branch_name, CONCAT(s.given_name," +
+                " ' ', s.family_name) AS supervisor_name FROM employees AS e " +
+                "LEFT JOIN branches AS b ON e.branch_id = b.id " +
+                "LEFT JOIN employees AS s ON e.supervisor_id = s.id " +
+                whereClause + " " +
+                "ORDER BY e.family_name, e.given_name, e.id;";
+
             List<Employee> employees = new();
             try
             {
@@ -108,12 +117,14 @@ namespace IOTApp
         }
 
         /// <summary>
-        /// Query the branches table using the given SQL string.
+        /// Query the branches table using the given SQL WHERE clause, if any.
         /// </summary>
-        /// <param name="sql">The SQL query to run.</param>
+        /// <param name="whereClause">The WHERE clause to append to the SQL
+        /// query.</param>
         /// <returns></returns>
-        public List<Branch> QueryBranches(string sql)
+        public List<Branch> QueryBranches(string whereClause = "")
         {
+            string sql = $"SELECT id, branch_name FROM branches {whereClause};";
             List<Branch> branches = new();
             try
             {
