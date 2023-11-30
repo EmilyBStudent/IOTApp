@@ -168,6 +168,8 @@ namespace IOTApp
                     $"{salary}, {supervisorId}, {branchId});";
                 _db.ExecuteNonQuery(sql);
 
+                MessageBox.Show("New employee added.", "Employee added",
+                    MessageBoxButton.OK);
                 Close();
             }
         }
