@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IOTApp"
         mc:Ignorable="d"
-        Title="View Employees" Height="450" Width="800" MinWidth="550" MinHeight="350"
+        Title="View Employees" Height="450" Width="800" MinWidth="600" MinHeight="350"
         ShowInTaskbar="False">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -23,14 +23,34 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-            <Button x:Name="ButtonAddEmployee" Content="Add" Height="30" Width="75"
-                    Margin="0,0,0,0" Click="ButtonAddEmployee_Click"/>
-            <Button x:Name="ButtonEditEmployee" Content="Edit" Height="30" Width="75"
-                    Margin="8,0,0,0" Click="ButtonEditEmployee_Click"/>
-            <Button x:Name="ButtonViewSales" Content="View Sales" Height="30"
-                    Width="75" Margin="8,0,0,0" Click="ButtonViewSales_Click"/>
-            <Button x:Name="ButtonDeleteEmployee" Content="Delete" Height="30" Width="75"
-                    Margin="8,0,0,0" Click="ButtonDeleteEmployee_Click"/>
+            <Button x:Name="ButtonAddEmployee" Height="30" Width="100"
+                    Margin="0,0,0,0" Click="ButtonAddEmployee_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="images/plus.png"/>
+                    <Label Content="Add"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="ButtonEditEmployee" Height="30" Width="100"
+                    Margin="8,0,0,0" Click="ButtonEditEmployee_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="images/pencil.png"/>
+                    <Label Content="Edit"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="ButtonViewSales" Height="30"
+                    Width="100" Margin="8,0,0,0" Click="ButtonViewSales_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="images/dollar.png"/>
+                    <Label Content="View Sales"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="ButtonDeleteEmployee" Height="30" Width="100"
+                    Margin="8,0,0,0" Click="ButtonDeleteEmployee_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="images/minus.png"/>
+                    <Label Content="Delete"/>
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <Button x:Name="ButtonClose" Content="Close" Height="30" Width="75"

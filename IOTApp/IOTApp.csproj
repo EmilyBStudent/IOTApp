@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\dollar.png" />
     <None Remove="images\IOTLogo.png" />
+    <None Remove="images\minus.png" />
+    <None Remove="images\pencil.png" />
+    <None Remove="images\plus.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,7 +20,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="images\dollar.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="images\IOTLogo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\minus.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\pencil.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\plus.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
