@@ -188,15 +188,31 @@ namespace IOTApp
                 else
                     branchId = "null";
 
-                string sql = "INSERT INTO employees (given_name, family_name, " +
-                    "date_of_birth, gender_identity, gross_salary, " +
-                    "supervisor_id, branch_id, created_at) VALUES (" +
-                    $"'{givenName}', '{familyName}', '{dobIsoFormat}', '{gender}', " +
-                    $"{salary}, {supervisorId}, {branchId}, NOW());";
-                _db.ExecuteNonQuery(sql);
+                string sql = String.Empty;
+                if (_windowMode == WindowMode.AddMode)
+                {
+                    sql = "INSERT INTO employees (given_name, family_name, " +
+                        "date_of_birth, gender_identity, gross_salary, " +
+                        "supervisor_id, branch_id, created_at) VALUES (" +
+                        $"'{givenName}', '{familyName}', '{dobIsoFormat}', '{gender}', " +
+                        $"{salary}, {supervisorId}, {branchId}, NOW());";
+                    _db.ExecuteNonQuery(sql);
+                    MessageBox.Show("New employee added.", "Employee added",
+                        MessageBoxButton.OK);
+                }
+                else
+                {
+                    int id = _employee.Id;
+                    sql = $"UPDATE employees SET given_name = '{givenName}', " +
+                        $"family_name = '{familyName}', date_of_birth = '{dobIsoFormat}', " +
+                        $"gender_identity = '{gender}', gross_salary = {salary}, " +
+                        $"supervisor_id = {supervisorId}, branch_id = {branchId}, " +
+                        $"updated_at = NOW() WHERE id = {id};";
+                    _db.ExecuteNonQuery(sql);
+                    MessageBox.Show($"Employee {_employee} updated.", "Employee updated",
+                        MessageBoxButton.OK);
+                }
 
-                MessageBox.Show("New employee added.", "Employee added",
-                    MessageBoxButton.OK);
                 Close();
             }
         }
