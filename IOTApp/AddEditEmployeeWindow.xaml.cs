@@ -23,6 +23,7 @@ namespace IOTApp
         private Database _db;
         private WindowMode _windowMode;
         private Employee? _employee;
+        private List<Employee> _supervisors;
 
         /// <summary>
         /// Initialise the window in Add Mode.
@@ -50,6 +51,16 @@ namespace IOTApp
             _employee = employee;
             Title = "Edit Employee";
             InitialiseAllModes();
+
+            // An employee cannot be their own supervisor.
+            foreach (Employee super in _supervisors)
+            {
+                if (super.Id == _employee.Id)
+                {
+                    _supervisors.Remove(super);
+                    break;
+                }
+            }
             FillEmployeeData();
         }
 
@@ -64,7 +75,8 @@ namespace IOTApp
 
             // Fill the supervisor combo box with a list of employees.
             List<Employee> supervisors = _db.QueryEmployees();
-            ComboBoxSupervisor.ItemsSource = supervisors;
+            _supervisors = supervisors;
+            ComboBoxSupervisor.ItemsSource = _supervisors;
         }
 
         /// <summary>
