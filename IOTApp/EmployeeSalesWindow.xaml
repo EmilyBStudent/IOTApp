@@ -37,7 +37,7 @@
                 <DataGridTextColumn Header="Client" Width="*"
                                     Binding="{Binding ClientName}"/>
                 <DataGridTextColumn Header="Sales" Width="*"
-                                    Binding="{Binding TotalSales}"/>
+                                    Binding="{Binding TotalSales, StringFormat={}{0:C0}}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="Close" Content="_Close" IsCancel="True" Width="75" Height="30"
