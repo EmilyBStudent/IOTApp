@@ -64,8 +64,8 @@ namespace IOTApp
         {
             string sql = "SELECT e.id, e.given_name, e.family_name, e.date_of_birth, " +
                 "e.gender_identity, e.gross_salary, e.branch_id, b.branch_name, " +
-                "e.supervisor_id, CONCAT(s.given_name, ' ', s.family_name) AS supervisor_name " +
-                "FROM employees AS e " +
+                "e.supervisor_id, CONCAT(s.given_name, ' ', s.family_name) AS supervisor_name, " +
+                "e.created_at, e.updated_at FROM employees AS e " +
                 "LEFT JOIN branches AS b ON e.branch_id = b.id " +
                 "LEFT JOIN employees AS s ON e.supervisor_id = s.id " +
                 whereClause + " " +
@@ -92,7 +92,8 @@ namespace IOTApp
                     dateStrs = rdr["date_of_birth"].ToString().Split(" ");
                     DateOnly dob = DateOnly.Parse(dateStrs[0]);
 
-                    // Make sure the branch and supervisor are not null.
+                    // Make sure the branch, supervisor, and created/updated dates are
+                    // not null.
                     string branchIdStr = String.Empty;
                     int? branchId = null;
                     if (rdr["branch_id"] != null)
@@ -116,8 +117,15 @@ namespace IOTApp
                     if (rdr["supervisor_name"] != null)
                         supervisor = rdr["supervisor_name"].ToString();
 
+                    string created = String.Empty;
+                    if (rdr["created_at"] != null)
+                        created = rdr["created_at"].ToString();
+                    string updated = String.Empty;
+                    if (rdr["updated_at"] != null)
+                        updated = rdr["updated_at"].ToString();
+
                     Employee emp = new(id, givenName, familyName, dob, gender, salary,
-                        supervisorId, supervisor, branchId, branch);
+                        supervisorId, supervisor, branchId, branch, created, updated);
                     employees.Add(emp);
                 }
                 return employees;
@@ -140,7 +148,7 @@ namespace IOTApp
         /// query.</param>
         /// <returns></returns>
         public List<Branch> QueryBranches(string whereClause = "")
-        {
+            {
             string sql = $"SELECT id, branch_name FROM branches {whereClause};";
             List<Branch> branches = new();
             try

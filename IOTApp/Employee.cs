@@ -55,6 +55,16 @@ namespace IOTApp
         /// as an empty string.
         /// </summary>
         public string BranchName { get; set; }
+        /// <summary>
+        /// The date the employee record was created. If null, it will be initialised as
+        /// an empty string.
+        /// </summary>
+        public string CreatedDate { get; set; }
+        /// <summary>
+        /// The date the employee record was last updated. If null, it will be
+        /// initialised as an empty string.
+        /// </summary>
+        public string UpdatedDate { get; set; }
 
         /// <summary>
         /// Initialise the employee with the given details.
@@ -76,7 +86,8 @@ namespace IOTApp
         /// null or omitted.</param>
         public Employee(int id, string givenName, string familyName, DateOnly dob,
             string gender, int salary, int? supervisorId = null, string? supervisor="",
-            int? branchId = null, string? branch="")
+            int? branchId = null, string? branch="", string created = "",
+            string updated = "")
         {
             Id = id;
             GivenName = givenName;
@@ -86,6 +97,8 @@ namespace IOTApp
             GrossSalary = salary;
             SupervisorId = supervisorId;
             BranchId = branchId;
+            CreatedDate = created;
+            UpdatedDate = updated;
 
             // If the supervisor name or the branch name is null, initialise the relevant
             // property as an empty string instead.
