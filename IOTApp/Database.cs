@@ -144,9 +144,11 @@ namespace IOTApp
         /// Query the Working With table to get a list of sales records, itemised by
         /// client and employee.
         /// </summary>
-        /// <param name="sql"></param>
-        /// <returns></returns>
-        public List<SalesRecord> QuerySalesByClient(string whereClause)
+        /// <param name="whereClause">The WHERE clause to include in the SQL query.
+        /// Table names should be abbreviated as follows: working_with = ww; 
+        /// employees = e; clients = c.</param>
+        /// <returns>A list of sales records itemised by client and employee.</returns>
+        public List<SalesRecord> QuerySalesByClient(string whereClause = "")
         {
             string sql = "SELECT ww.employee_id, CONCAT(e.given_name, ' ', e.family_name) AS employee_name, " +
                 "ww.client_id, c.client_name, ww.total_sales FROM working_with AS ww " +
@@ -187,6 +189,8 @@ namespace IOTApp
                 Close();
             }
         }
+
+
 
         /// <summary>
         /// Execute the given SQL as a non-query (i.e. no results need to be returned).
