@@ -50,7 +50,7 @@ namespace IOTApp
             {
                 totalSales = 0;
             }
-            string formattedTotalSales = $"${totalSales.ToString("N0")}";
+            string formattedTotalSales = totalSales.ToString("C0");
             LabelTotalSales.Content = formattedTotalSales;
 
             // Get and display the employee's sales breakdown.
